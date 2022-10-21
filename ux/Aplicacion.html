@@ -1,0 +1,211 @@
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+<!-- En este archivo se encuentra la página HTML y las funciones -->
+<!-- que harán las llamadas a la lógica Fake -->
+
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+<!DOCTYPE html>
+<html>
+
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+<head>
+<meta charset="utf-8"/>   
+
+<!-- ---------------------------------------------------- -->
+<script src="logicaFake/buscarMedidas.js"></script>
+<script src="logicaFake/buscarMedidaConID.js"></script>
+<script src="logicaFake/insertarMedida.js"></script>
+<!-- ---------------------------------------------------- -->
+
+
+
+<script>
+  function mostrarMedidas() {
+  console.log("Inicio Aplicación/mostrarMedidas()");
+
+  // llamo a la función de la lógica (versión fake)
+  mostrarInfo(function( err, res ) {
+    
+    // cuando tenga el resultado lo muestro
+   if ( err ) {
+     alert( " hubo un error de transmisión http: " + err )
+     return
+   } else if ( res.error ) {
+     alert( " hubo un error en la llamada: " + JSON.stringify( res.error ) )
+     return
+   }
+    //document.getElementById("infoMedidas").innerHTML  =  "   resultado=  "  + JSON.stringify( res );
+
+    console.log("Se llama a mostrar Tabla");
+    mostrarTabla(res);
+  })
+  
+  }
+  </script>
+
+
+<!-- ----------------------------------------------------------------------- -->
+<!-- ----------------------------------------------------------------------- -->
+<script>
+
+    // .................................................................
+    // id:Texto -->
+    // buscarMedidaPulsado() <--
+    // <--
+    // Medidas[]
+    // .................................................................
+  function buscarMedidaPulsado() {
+  console.log("Inicio de la función buscarMedidaPulsado()");
+  var id = document.getElementById("id").value
+  
+  // llamo a la función de la lógica (versión fake)
+  buscarMedidaConID( id , function( err, res ) {
+    // cuando tenga el resultado lo muestro
+   if ( err ) {
+     alert( " hubo un error de transmisión http: " + err )
+     return
+   } else if ( res.error ) {
+     alert( " hubo un error en la llamada: " + JSON.stringify( res.error ) )
+     return
+   }
+    document.getElementById("salida").innerHTML  =  "   resultado=  "  + JSON.stringify( res );
+  })
+  
+  }
+  </script>
+
+
+<script>
+
+  function insertarMedidaPulsado() {
+
+console.log("Inicio de la función insertarMedidaPulsado()");
+
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
+  var hour = today.getHours();
+  var minutes = today.getMinutes();
+  var seconds = today.getSeconds();
+
+  today = mm + '/' + dd + '/' + yyyy + ", " + hour + ":" + minutes + ":" + seconds;
+
+  
+  let nombreSensor = "sensorOzono";
+  let latitud = Math.random().toFixed(3);
+  let longitud = Math.random().toFixed(3);
+  let medida = Math.random().toFixed(3);
+  var id = null;
+  
+  // llamo a la función de la lógica (versión fake)
+  insertarMedida( {id:  id, medida:  medida, fecha:  today, nombreSensor: nombreSensor, longitud: longitud, latitud: latitud }, function( err, res ) {
+    // cuando tenga el resultado lo muestro
+   if ( err ) {
+     alert( " hubo un error de transmisión http: " + err )
+     return
+   } else if ( res.error ) {
+     alert( " hubo un error en la llamada: " + JSON.stringify( res.error ) )
+     return
+   }
+    document.getElementById("salida").innerHTML = " resultado= " + res;
+
+  })
+  
+  }
+  </script>
+
+
+<script>
+
+  function mostrarTabla(datosTabla){
+    console.log("comienza mostrarTabla()");
+
+//Tabla con los contenidos
+var tablaMedidas = document.getElementById('tabla');
+
+  //Se vacía la tabla para que no se superpongan los datos
+  var tablafilas = tablaMedidas.getElementsByTagName('tr');
+
+
+for (let i = tablafilas.length - 1; i > 0; i--) {
+  tablafilas[i].remove();
+}
+
+//Aqui vamos a guardar los tr y td con su informacion.
+let tablaContent = ``
+
+
+for (const item of datosTabla) {
+  //Fijate que utilizamos += para acumular los datos. 
+  //Template strings syntax
+   tablaContent += `
+    <tr>
+      <td>${item.id}</td>
+      <td>${item.medida}</td>
+      <td>${item.fecha}</td>
+      <td>${item.nombreSensor}</td>
+      <td>${item.longitud}</td>
+      <td>${item.latitud}</td>
+    </td>
+  
+  `
+}
+//Finalmente añadimos el contenido a la tabla
+tablaMedidas.innerHTML += tablaContent
+}
+
+</script>
+
+
+
+</head>
+
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+<body onload="mostrarMedidas()">
+
+<h1>Medidas Sensor</h1>
+
+<form>
+
+  Id:<br>
+  <input id="id" type="number" name="Id" placeholder="ID">
+  <br>
+
+
+</form> 
+
+
+<button type="buton" onclick="buscarMedidaPulsado()">Buscar Medida</button>
+
+<p>
+  <button type="buton" onclick="mostrarMedidas()"> Mostrar todas las medidas </button>
+</p>
+
+<p id="salida">Estado</p>
+
+
+<table id="tabla">
+
+  <tr>
+
+    <th> ID </th>
+    <th> MEDIDA </th>
+    <th> FECHA </th>
+    <th> NOMBRE </th>
+    <th> LONGITUD </th>
+    <th> LATITUD </th>
+
+  </tr>
+  
+</table>
+
+
+</body>
+</html>
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->
+<!-- ---------------------------------------------------- -->

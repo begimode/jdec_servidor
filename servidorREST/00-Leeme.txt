@@ -1,0 +1,14 @@
+
+Acceso a las reglas rest de la logica, asumiento que son con formato:
+
+	--------------------------------
+	POST /f/<nombre funcion de la logica>
+
+	cuerpo: datos para la funcion en formato JSON
+	--------------------------------
+
+Con esto: ¡aquí NO hay nada que cambiar! Las funciones se añaden directamente en
+
+	logica/funciones
+npm run servidor
+npm test

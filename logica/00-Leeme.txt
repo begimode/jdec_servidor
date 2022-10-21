@@ -1,0 +1,11 @@
+
+Esta solución/implementación:
+
+	 + carga cualquier función que haya en funciones.  Estas son
+	   funciones  de la  LOGICA.  (pueden tener  utilidades  (que   se
+	   cargan indirectamente, si son utilizadas)
+
+     +  Por tanto,  solamente hay  que escribir  por imitación  nuevas
+     funciones de lógica en ./funciones y sus test en ./test
+
+	 + main1.js main2.js son las pruebas (no automáticas) preliminares
