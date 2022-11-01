@@ -1,211 +1,256 @@
 <!-- ---------------------------------------------------- -->
 <!-- ---------------------------------------------------- -->
-<!-- En este archivo se encuentra la página HTML y las funciones -->
-<!-- que harán las llamadas a la lógica Fake -->
-
-<!-- ---------------------------------------------------- -->
-<!-- ---------------------------------------------------- -->
 <!DOCTYPE html>
 <html>
 
 <!-- ---------------------------------------------------- -->
 <!-- ---------------------------------------------------- -->
+
 <head>
-<meta charset="utf-8"/>   
+  <meta charset="utf-8" />
 
-<!-- ---------------------------------------------------- -->
-<script src="logicaFake/buscarMedidas.js"></script>
-<script src="logicaFake/buscarMedidaConID.js"></script>
-<script src="logicaFake/insertarMedida.js"></script>
-<!-- ---------------------------------------------------- -->
+  <!-- ---------------------------------------------------- -->
+  <!-- Insertar Scripts-->
+  <script src="logicaFake/buscarTodasMedicion.js"></script>
+  <script src="logicaFake/buscarMedicionID.js"></script>
+  <script src="logicaFake/insertarMedicion.js"></script>
+  <script src="logicaFake/insertarUsuario.js"></script>
+  <script src="logicaFake/buscarUsuario.js"></script>
+  <script src="logicaFake/auth.js"></script>
+  <script src="logicaFake/desencriptar.js"></script>
 
 
 
-<script>
-  function mostrarMedidas() {
-  console.log("Inicio Aplicación/mostrarMedidas()");
+  <!-- ---------------------------------------------------- -->
+  <!-- Obtener los datos -->
+  <script>
+    function buscarTodasMedicionesPulsado() {
+      // llamo a la función de la lógica (versión fake)
+      buscarMedicion(function (err, res) {
+        // cuando tenga el resultado lo muestro
+        if (err) {
+          alert(" hubo un error de transmisión http: " + err)
+          return
+        } else if (res.error) {
+          alert(" hubo un error en la llamada: " + JSON.stringify(res.error))
+          return
+        }
+        console.log(res)
+        //Llamo a esta función para crear la tabla
+        crearTablaTodo(res)
+      })
 
-  // llamo a la función de la lógica (versión fake)
-  mostrarInfo(function( err, res ) {
-    
-    // cuando tenga el resultado lo muestro
-   if ( err ) {
-     alert( " hubo un error de transmisión http: " + err )
-     return
-   } else if ( res.error ) {
-     alert( " hubo un error en la llamada: " + JSON.stringify( res.error ) )
-     return
-   }
-    //document.getElementById("infoMedidas").innerHTML  =  "   resultado=  "  + JSON.stringify( res );
+    }
 
-    console.log("Se llama a mostrar Tabla");
-    mostrarTabla(res);
-  })
-  
-  }
+    function buscarMedicionIDPulsado() {
+
+      //Obtengo la id
+      var id = document.getElementById("id").value
+
+      // llamo a la función de la lógica (versión fake)
+      buscarMedicionConID(id, function (err, res) {
+        // cuando tenga el resultado lo muestro
+        if (err) {
+          alert(" hubo un error de transmisión http: " + err)
+          return
+        } else if (res.error) {
+          alert(" hubo un error en la llamada: " + JSON.stringify(res.error))
+          return
+        }
+
+        //Llamo a esta función para crear la tabla
+        crearTableID(res)
+      })
+
+    }
   </script>
 
+  <!-- Tablas -->
+  <script>
+    function crearTablaTodo(data) {
+      var table = document.getElementById("myTable")
+      //Vacío la tabla
+      table.innerHTML = ""
+      //Relleno la tabla
+      for (var i = 0; i < data.length; i++) {
+        var row = "<tr><td>" + data[i].id + "</td> <td>" + data[i].valor + "</td> <td>" + data[i].fecha + "</td> <td>" + data[i].nombreSensor + "</td> <td>" + data[i].Longitud + "</td> <td>" + data[i].Latitud + "</tr>"
+        table.innerHTML += row
+      }
+    }
 
-<!-- ----------------------------------------------------------------------- -->
-<!-- ----------------------------------------------------------------------- -->
-<script>
-
-    // .................................................................
-    // id:Texto -->
-    // buscarMedidaPulsado() <--
-    // <--
-    // Medidas[]
-    // .................................................................
-  function buscarMedidaPulsado() {
-  console.log("Inicio de la función buscarMedidaPulsado()");
-  var id = document.getElementById("id").value
-  
-  // llamo a la función de la lógica (versión fake)
-  buscarMedidaConID( id , function( err, res ) {
-    // cuando tenga el resultado lo muestro
-   if ( err ) {
-     alert( " hubo un error de transmisión http: " + err )
-     return
-   } else if ( res.error ) {
-     alert( " hubo un error en la llamada: " + JSON.stringify( res.error ) )
-     return
-   }
-    document.getElementById("salida").innerHTML  =  "   resultado=  "  + JSON.stringify( res );
-  })
-  
-  }
+    function crearTableID(data) {
+      var table = document.getElementById("myTable")
+      //Vacío la tabla
+      table.innerHTML = ""
+      //Relleno la tabla
+      var row = "<tr><td>" + data.id + "</td> <td>" + data.valor + "</td> <td>" + data.fecha + "</td> <td>" + data.nombreSensor + "</td> <td>" + data.Longitud + "</td> <td>" + data.Latitud + "</tr>"
+      table.innerHTML += row
+    }
   </script>
 
+  <!-- Registrar -->
+  <script>
+    function registrar() {
+      var correo = document.getElementById("correo").value
+      var contrasenya = document.getElementById("contrasenya").value
+      var telefono = document.getElementById("telefono").value
+      var nombre = document.getElementById("nombre").value
+      var apellidos = document.getElementById("apellidos").value
 
-<script>
+      var datos = { correo: correo, contrasenya: contrasenya, telefono: parseInt(telefono), nombre: nombre, apellidos: apellidos, estado: "No Verificado" }
 
-  function insertarMedidaPulsado() {
-
-console.log("Inicio de la función insertarMedidaPulsado()");
-
-  var today = new Date();
-  var dd = String(today.getDate()).padStart(2, '0');
-  var mm = String(today.getMonth() + 1).padStart(2, '0');
-  var yyyy = today.getFullYear();
-  var hour = today.getHours();
-  var minutes = today.getMinutes();
-  var seconds = today.getSeconds();
-
-  today = mm + '/' + dd + '/' + yyyy + ", " + hour + ":" + minutes + ":" + seconds;
-
-  
-  let nombreSensor = "sensorOzono";
-  let latitud = Math.random().toFixed(3);
-  let longitud = Math.random().toFixed(3);
-  let medida = Math.random().toFixed(3);
-  var id = null;
-  
-  // llamo a la función de la lógica (versión fake)
-  insertarMedida( {id:  id, medida:  medida, fecha:  today, nombreSensor: nombreSensor, longitud: longitud, latitud: latitud }, function( err, res ) {
-    // cuando tenga el resultado lo muestro
-   if ( err ) {
-     alert( " hubo un error de transmisión http: " + err )
-     return
-   } else if ( res.error ) {
-     alert( " hubo un error en la llamada: " + JSON.stringify( res.error ) )
-     return
-   }
-    document.getElementById("salida").innerHTML = " resultado= " + res;
-
-  })
-  
-  }
+      insertarUsuario(datos, function (err, res) {
+        // cuando tenga el resultado lo muestr
+        if (err) {
+          alert(" hubo un error de transmisión http: " + err)
+          return
+        }
+      })
+    }
   </script>
 
-
-<script>
-
-  function mostrarTabla(datosTabla){
-    console.log("comienza mostrarTabla()");
-
-//Tabla con los contenidos
-var tablaMedidas = document.getElementById('tabla');
-
-  //Se vacía la tabla para que no se superpongan los datos
-  var tablafilas = tablaMedidas.getElementsByTagName('tr');
+  <!-- Login -->
+  <script>
+    function login() {
+      var correo = document.getElementById("correo").value
+      var contrasenya = document.getElementById("contrasenya").value
 
 
-for (let i = tablafilas.length - 1; i > 0; i--) {
-  tablafilas[i].remove();
-}
+      buscarUsuario(correo, function (err, res) {
+        // cuando tenga el resultado lo muestro
+        if (err) {
+          alert(" hubo un error de transmisión http: " + err)
+          return
+        } else if (res.error) {
+          alert(" hubo un error en la llamada: " + JSON.stringify(res.error))
+          return
+        }
 
-//Aqui vamos a guardar los tr y td con su informacion.
-let tablaContent = ``
+        var datosCont = { hash: res.contrasenya, cont: contrasenya }
+        console.log(datosCont);
+
+        desencriptar(datosCont, function (err, res) {
+          console.log(res);
+            if(res == true){
+              window.location.href = "index.html"
+            }
+        })
+
+      
+      
+
+      /*
+      if (res.correo == correo && res.contrasenya == correo) {
+        auth("pepe", function (err, res) {
+          // cuando tenga el resultado lo muestro
+          if (err) {
+            alert(" hubo un error de transmisión http: " + err)
+            return
+          }
+          console.log(res)
+        })
+        //window.location.href = "index.html";
+        
 
 
-for (const item of datosTabla) {
-  //Fijate que utilizamos += para acumular los datos. 
-  //Template strings syntax
-   tablaContent += `
-    <tr>
-      <td>${item.id}</td>
-      <td>${item.medida}</td>
-      <td>${item.fecha}</td>
-      <td>${item.nombreSensor}</td>
-      <td>${item.longitud}</td>
-      <td>${item.latitud}</td>
-    </td>
-  
-  `
-}
-//Finalmente añadimos el contenido a la tabla
-tablaMedidas.innerHTML += tablaContent
-}
 
-</script>
+      }
+*/
+    })
 
 
+    }
+  </script>
 
 </head>
 
 <!-- ---------------------------------------------------- -->
 <!-- ---------------------------------------------------- -->
-<body onload="mostrarMedidas()">
 
-<h1>Medidas Sensor</h1>
+<body>
+  <h3>Jorge Larrosa Quesada</h3>
+  <h1>Mediciones Sensor Ozono</h1>
+  <form>
+    ID:<br>
+    <input id="id" type="text" name="id" value="">
+    <br>
+  </form>
 
-<form>
+  <p>
 
-  Id:<br>
-  <input id="id" type="number" name="Id" placeholder="ID">
-  <br>
+    <button type="buton" onclick="buscarMedicionIDPulsado()">Buscar Medición Por ID</button>
 
+  </p>
 
-</form> 
+  <p>
 
+    <button type="buton" onclick="buscarTodasMedicionesPulsado()">Mostrar Todas Mediciones</button>
 
-<button type="buton" onclick="buscarMedidaPulsado()">Buscar Medida</button>
+  </p>
 
-<p>
-  <button type="buton" onclick="mostrarMedidas()"> Mostrar todas las medidas </button>
-</p>
+  <p id="salida"></p>
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Valor</th>
+      <th>Fecha</th>
+      <th>Sensor</th>
+      <th>Longitud</th>
+      <th>Latitud</th>
+    </tr>
+    <tbody id="myTable">
 
-<p id="salida">Estado</p>
+    </tbody>
+  </table>
 
+  <form>
+    Correo:<br>
+    <input id="correo" type="text" name="id" value="">
+    <br>
+  </form>
 
-<table id="tabla">
+  <form>
+    Contraseña:<br>
+    <input id="contrasenya" type="text" name="id" value="">
+    <br>
+  </form>
 
-  <tr>
+  <form>
+    Telefono:<br>
+    <input id="telefono" type="number" name="id" value="">
+    <br>
+  </form>
 
-    <th> ID </th>
-    <th> MEDIDA </th>
-    <th> FECHA </th>
-    <th> NOMBRE </th>
-    <th> LONGITUD </th>
-    <th> LATITUD </th>
+  <form>
+    Nombre:<br>
+    <input id="nombre" type="text" name="id" value="">
+    <br>
+  </form>
 
-  </tr>
-  
-</table>
+  <form>
+    Apellidos:<br>
+    <input id="apellidos" type="text" name="id" value="">
+    <br>
+  </form>
+
+  <p>
+
+    <button type="buton" onclick="login()">Login</button>
+
+  </p>
+
+  <p>
+
+    <button type="buton" onclick="registrar()">Registrar</button>
+
+  </p>
+
 
 
 </body>
+
 </html>
+<!-- ---------------------------------------------------- -->
 <!-- ---------------------------------------------------- -->
 <!-- ---------------------------------------------------- -->
 <!-- ---------------------------------------------------- -->

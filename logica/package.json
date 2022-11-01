@@ -9,7 +9,9 @@
 		"test": "node ./node_modules/mocha/bin/mocha"
 	},
 	"dependencies": {
-		"sqlite3": "*",
+		"sqlite3": "*"
+	},
+	"devDependencies": {
 		"mocha": "8.3.0"
 	}
 }

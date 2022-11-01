@@ -1,6 +1,6 @@
 {
 	"//": "npm run test",
-	"name": "servidor_rest",
+	"name": "servidorrest",
 	"description": "2019",
 	"license": "LGPL-3.0",
 	"version": "0.0.1",
@@ -10,9 +10,10 @@
 		"test": "node ./node_modules/mocha/bin/mocha"
 	},
 	"dependencies": {
+		"cors": "*",
 		"express": "*",
+		"mocha": "8.3.0",
 		"request": "*",
-		"sqlite3": "*",
-		"mocha": "8.3.0"
+		"sqlite3": "*"
 	}
 }
