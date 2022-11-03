@@ -4,15 +4,16 @@
 
 var cors = require('cors')
 const express = require('express')
+const router = express.Router()
 const bodyParser = require('body-parser')
 const jwt = require("jsonwebtoken")
 require("dotenv").config()
-
 
 const fs = require('fs')
 
 const Logica = require("../logica/logica.js")
 const { log } = require('console')
+const { constants } = require('buffer')
 
 // --------------------------------------------------------------------------------
 // En vez de tener que instalar una regla para cada función de la lógica
@@ -139,6 +140,26 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	}) // get /medicion id
 
 	// .......................................................
+	// GET /usuario/<correo>
+	// .......................................................
+	servidorExpress.get("/usuario2/:correo", async function (peticion, respuesta) {
+		console.log(" * GET /usuario correo ")
+		// averiguo el id
+		var correo = peticion.params.correo
+		// llamo a la función adecuada de la lógica
+		var res = await laLogica.buscarUsuario(correo)
+		console.log(res);
+		// si el array de resultados no tiene una casilla ...
+		if (res.length != 1) {
+			// 404: not found
+			respuesta.status(404).send("no encontré id: " + id)
+			return
+		}
+		// todo ok
+		respuesta.send(JSON.stringify(res[0]))
+	}) // get /medicion id
+
+	// .......................................................
 	// DELETE /insertarMedicion
 	// .......................................................
 
@@ -178,6 +199,27 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 
 	}) // get /medicion id
 
+	//Token
+	servidorExpress.post("/generateToken/:datos", async function (peticion, res) {
+		console.log(" * POST /generateToken ")
+		var datos = JSON.parse(peticion.body)
+		console.log("server1 " + datos);
+
+		var res2 = await laLogica.generateToken(datos)
+		console.log("server " + res2);
+		res.send(JSON.stringify(res2))
+
+	}) // get /medicion id
+
+	//router.get("/", laLogica.verifyTokenAuth())
+	servidorExpress.get("/verify/:datos", async function (peticion, res) {
+		var datos = JSON.parse(peticion.body)
+		await laLogica.verifyTokenAuth()
+		console.log("Esto es seguro");
+		res.send(JSON.stringify(res[0]))
+
+	}) // get /medicion id
+
 	//Desencriptar
 	servidorExpress.post("/desencriptar/:datos", async function (peticion, res) {
 		console.log(" * POST /desencriptar ")
@@ -187,6 +229,38 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 
 	}) // get /medicion id
 
+	
+	servidorExpress.get("/desencriptar3", async function (peticion, res) {
+		console.log(" * POST /desencriptar3")
+		const hash = peticion.query.hash
+		const cont = peticion.query.cont
+
+		const datos = {hash: hash, cont: cont}
+		//console.log(datos);
+		var res2 = await laLogica.desencriptar(datos)
+		console.log(res2);
+		const resultado = {estado: res2}
+		res.send(JSON.stringify(resultado))
+		
+	}) // get /medicion id
+
+
+	servidorExpress.post("/actualizar", async function (peticion, res) {
+		console.log(" * POST /actualizar")
+		
+		var datos = JSON.parse(peticion.body)
+		console.log(datos.correoActual)
+		console.log(datos.correo)
+		console.log(datos.telefono)
+		console.log(datos.nombre)
+		console.log(datos.apellidos)
+		//console.log(datos.estado)
+
+
+		await laLogica.cambiarDatosPersonales(datos)
+		console.log("Hecho");
+		res.send("OK")
+	}) // get /medicion id
 
 } // ()
 

@@ -124,7 +124,7 @@ describe("Test 1: Funcionamiento de la logica", function () {
 			error = err;
 		}
 	})
-*/
+
 
 	it("auth", async function () {
 		try {
@@ -138,6 +138,26 @@ describe("Test 1: Funcionamiento de la logica", function () {
 	// it
 	// ....................................................
 	// ....................................................
+
+	*/
+
+	it("puedo actualizar los datos", async function () {
+		try {
+			var res = await laLogica.cambiarDatosPersonales({
+				correoActual: "lucas",
+				correo: "juan",
+				telefono: 56,
+				nombre: "juan",
+				apellidos: "juan"
+			})
+			
+			assert.equal(err, null, "¿ha habido un error?")
+			//assert.equal(respuesta.statusCode, 200, "¿El código no es 200 (OK)")
+		   
+		} catch (error) {
+			error = err;
+		}
+	})
 
 	it("cerrar conexión a la base de datos",
 		async function () {

@@ -46,7 +46,7 @@ describe("Test 1: prueba funcionamiento (recuerda arrancar el servidor)", functi
 	// .2
 	// ........................................................................... 
 	
-	*/
+	
 	it("probar POST /insertarUsuario", function (hecho) {
 
 		// esta función prueba está en logica/funciones/prueba
@@ -130,7 +130,71 @@ describe("Test 1: prueba funcionamiento (recuerda arrancar el servidor)", functi
 			} // callback
 		) // .post
 	}) // it
+	
+
+	it("probar GET /desencriptar3", function (hecho) {
+		var hash = "pe"
+		var cont = "h"
+		request.get(
+			{
+				url: IP_PUERTO + "/desencriptar3?cont=" + cont +"&hash=" + hash,
+				headers: { 'User-Agent': 'Jorge' }
+			},
+			function (err, respuesta, carga) {
+				var solucion = JSON.parse(carga)
+				//console.log(solucion[0]);
+				assert.equal(err, null, "¿ha habido un error?")
+				assert.equal(respuesta.statusCode, 200, "¿El código no es 200 (OK)")
+				assert.equal(solucion[1].id, 8, "¿no esta bien el nombre?")
+				assert.equal(solucion[1].valor, 55, "¿no esta bien el nombre?")
+				hecho()
+			} // callback
+		) // .get
+	}) // it
+
+	
+
+	it("probar GET /desencriptar3", function (hecho) {
+		var hash = "$2a$10$oOf7zoM5q8zFuTGCTosJFu9F24xvE3lEzjCZ66t2Pg/XsXGRJwev6"
+		var cont = "juan"
+		request.get(
+			{
+				url: IP_PUERTO + "/desencriptar3?hash="+hash+"&cont="+cont ,
+				headers: { 'User-Agent': 'Jorge' }
+			},
+			function (err, respuesta, carga) {
+				var solucion = JSON.parse(carga)
+				//console.log(solucion[0]);
+				assert.equal(err, null, "¿ha habido un error?")
+				assert.equal(respuesta.statusCode, 200, "¿El código no es 200 (OK)")
+				//console.log(solucion);
+				hecho()
+			} // callback
+		) // .get
+	}) // it
 	*/
+
+	it("probar POST /actualizar", function (hecho) {
+
+		// esta función prueba está en logica/funciones/prueba
+		var datos = {
+			correoActual: "test", correo: "juan", telefono: 555, nombre: "test", apellidos: "test"
+		}
+
+		request.post(
+			{
+				url: IP_PUERTO + "/actualizar",
+				headers: { 'User-Agent': 'Jorge', 'Content-Type': 'application/json' },
+				body: JSON.stringify(datos)
+			},
+			function (err, respuesta, carga) {
+				assert.equal(err, null, "¿ha habido un error?")
+				assert.equal(respuesta.statusCode, 200, "¿El código no es 200 (OK)")
+				hecho()
+			} // callback
+		) // .post
+	}) // it
+	
 
 }) // describe
 

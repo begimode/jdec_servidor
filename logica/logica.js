@@ -3,9 +3,12 @@
 // .....................................................................
 const sqlite3 = require("sqlite3")
 var express = require("express")
+const router = express.Router()
 var nodemailer = require("nodemailer")
-const jwt = require("jsonwebtoken")
+const jwt = require("../logica/generateToken")
 const encrypt = require("../logica/encrypt")
+require("dotenv").config();
+
 
 require("dotenv").config()
 
@@ -182,18 +185,8 @@ module.exports = class Logica {
 					(err ? rechazar(err) : resolver(res))
 				})
 		})
-
-
 	}
 	// ()
-
-	async desencriptar(datos) {
-		const checkPassword = await encrypt.compare(datos.cont,datos.hash)
-
-		return new Promise((resolver, rechazar) => {
-			resolver(checkPassword)
-		})
-	}
 
 	//------------------
 	enviarCorreo() {
@@ -226,31 +219,55 @@ module.exports = class Logica {
 	//---------------------------------------
 
 	//Token
-	generateAccessToken(user) {
+	async generateToken(correo) {
+		console.log("logica1 " + correo);
+		const tokenSession = await jwt.tokenSign(correo)
+		console.log("logica2 " + tokenSession);
+
 		return new Promise((resolver, rechazar) => {
-			resolver(jwt.sign(user, process.env.SECRET, { expiresIn: '1m' }))
+			resolver(tokenSession)
 		})
-		//return jwt.sign(user, process.env.SECRET, {expiresIn: '1m'})
 	}
 
-	validateToken(req, res, next) {
-		const accessToken = req.headers["authorization"] || req.query.accessToken
-		if (!accessToken) {
-			res.send("Acceso denegado")
+	async verifyTokenAuth(datos) {
+		const token = rew.headers.authorization.split("").pop()
+		const tokenData = await jwt.verifyToken(datos)
+		console.log("logica2 " + tokenData);
+
+		if (tokenData.correo) {
+			window.location.href = "index.html"
+		} else {
+			res.status(409)
+			res.send({ error: "Tu por aquí no pasas" })
 		}
+	}
 
-		jwt.verify(accessToken, process.env.SECRET, (err, user) => {
-			if (err) {
-				res.send("Acceso denegado")
-			} else {
-				req.user = user
-				next()
-			}
+	//Desencriptar Contraseña
+
+	async desencriptar(datos) {
+		const checkPassword = await encrypt.compare(datos.cont, datos.hash)
+
+		return new Promise((resolver, rechazar) => {
+			resolver(checkPassword)
 		})
 	}
 
-	//Encriptar Contraseña
-
+	cambiarDatosPersonales(datos) {
+		var textoSQL = "update usuario set nombre=$nombre, apellidos=$apellidos, telefono=$telefono, correo=$correo where correo=$correoActual";  //$id es un parámetro 
+		var valoresParaSQL = {
+			$correoActual: datos.correoActual,
+			$correo: datos.correo,
+			$telefono: datos.telefono,
+			$nombre: datos.nombre,
+			$apellidos: datos.apellidos,
+		} // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
 
 	// .................................................................
 	// cerrar() -->

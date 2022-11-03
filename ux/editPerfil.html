@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title> Editar Perfil </title>
+
+    <!-- ---------------------------------------------------- -->
+    <!-- Insertar Scripts-->
+    <script src="logicaFake/actualizar.js"></script>
+
+    <script>
+
+        function actualizarPulsado() {
+            var correoNuevo = document.getElementById("correoNuevo").value
+            var correoActual = document.getElementById("correo").value
+            var nombre2 = document.getElementById("nombre").value
+            var apellidos2 = document.getElementById("apellidos").value
+            var telefono2 = document.getElementById("telefono").value
+
+            var datos = {
+                correoActual: correoActual,
+                correo: correoNuevo,
+                telefono: telefono2,
+                nombre: nombre2,
+                apellidos: apellidos2
+            }
+
+            actualizar(datos, function (err, res) {
+                if (err) {
+                    alert(" hubo un error de transmisión http: " + err)
+                    return
+                } else {
+                    console.log("Actualizado");
+                }
+            })
+        }
+    </script>
+
+
+</head>
+
+<body>
+
+    <h3>J.DEC</h3>
+    <h1>Editar Perfil</h1>
+
+    <form>
+        Correo Actual:<br>
+        <input id="correo" type="text" name="id" value="">
+        <br>
+    </form>
+
+    <form>
+        Telefono:<br>
+        <input id="telefono" type="number" name="id" value="">
+        <br>
+    </form>
+
+    <form>
+        Nombre:<br>
+        <input id="nombre" type="text" name="id" value="">
+        <br>
+    </form>
+
+    <form>
+        Apellidos:<br>
+        <input id="apellidos" type="text" name="id" value="">
+        <br>
+    </form>
+
+    <form>
+        CorreoNuevo:<br>
+        <input id="correoNuevo" type="text" name="id" value="">
+        <br>
+    </form>
+
+    <p>
+
+        <button type="buton" onclick="actualizarPulsado()">Actualizar</button>
+
+    </p>
+
+</body>
+
+</html>
