@@ -1,0 +1,141 @@
+@font-face {
+    font-family: 'Yahei';
+    src: url(./font/Yahei.ttf);
+}
+
+body{
+    margin: 0;
+    font-family: 'Yahei', sans-serif;
+}
+
+.contenedorRegistrar{
+    display: grid;
+    flex-direction: row;
+
+    grid-template-columns: 1fr 1fr;
+    height: 100vh;
+}
+
+
+.imagenRegistrar{
+    width:100%;
+    height: 100%;
+    
+    overflow: hidden;
+    background-size: cover;
+}
+
+
+.formularioRegistrar{
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    padding-left: 10%;
+    padding-right: 10%;
+
+    background-color: #f2f2f2;
+}
+
+.nombre_apellidos{
+    display: flex;
+    justify-content: space-between
+}
+
+.correo_contraseña{
+    display: flex;
+    flex-direction: column;
+}
+
+.politica_privacidad{
+    display: flex;
+    justify-content: space-between;
+
+    margin-top: 5%;
+
+}
+
+.contenedorPrivacidad{
+    width: 50%;
+
+}
+.contenedorLogin{
+    width: 50%;
+
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.loginHref{margin-right: 10%;}
+
+.contenedorInfo{
+    width: 100%;
+}
+
+input{
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: transparent;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    margin-top: 10%;
+
+    font-family: "Yahei", sans-serif;
+}
+
+
+.subTitle{
+    width: 100%;
+}
+
+.nombre, .apellidos{
+    width: 45%;
+}
+
+.contenedorBoton{
+    margin-top: 15%;
+    margin-bottom: 5%;
+}
+
+.botonRegistrar{
+    border-radius: 8px;
+    padding: 12px 70px;
+    cursor: pointer;
+
+    border: none;
+
+    background-color: #4EA69D;
+    font-weight: bold;
+    font-size: 15px;
+
+    font-family: "Yahei", sans-serif;
+
+
+    transition-duration: 0.4s;
+}
+
+
+.botonRegistrar:hover{
+    background-color: #36746d;
+    color: white;
+    border: 1px #4EA69D;
+}
+
+
+a:link{
+    color: #4EA69D;
+    text-decoration: none;
+}
+a:visited{
+    color: #36746d;
+    text-decoration: none;
+}
+
+
+
+

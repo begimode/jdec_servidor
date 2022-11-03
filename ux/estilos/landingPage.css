@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Abel&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,900;1,100;1,200;1,300;1,400;1,600;1,900&display=swap');
+body{
+    font-family: 'Poppins', sans-serif;
+}
+.contenedor{
+    width: 100vw;
+    overflow: hidden;
+    height: 80vh;
+}
+
+button{
+    background-color: #8DCFA3;
+    border: none;
+    padding: 15px 35px;
+    font-size: 15px;
+    border-radius: 50px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.397);
+    font-weight: 200;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* ------------------ DIV1 ------------------- */
+
+header p{
+    text-align: right;
+    cursor: pointer;}
+
+    a{
+        text-decoration: none;
+        color: black;
+    }
+
+.title{
+    height: 60%;
+    width: 20vw;
+    z-index: 2;
+    /* background-color: wheat; */
+    align-self: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.title button, .title p{
+    width: 15vw;
+    margin-left: 70px;
+}
+
+h1{
+    margin: 40px 70px;
+    width: 100%;
+}
+
+.div1{
+    display: flex;
+    flex-direction: row;
+}
+
+.foto1{
+    display: flex;
+    overflow: hidden;
+}
+
+.white{
+    background-color: white;
+    width: 20vw;
+    height: 80vh;
+    position: absolute;
+}
+
+
+/* ------------------ DIV2 ------------------- */
+
+.div2{
+    background-color: #8dcfa349;
+    display: flex;
+    flex-direction: row;
+    height: 50vh;
+}
+
+.div2 .text{
+    width: 30vw;
+    height: 50%;
+}
+
+.div2 h2, .div3 h2, .div4 h2, .div5 h2, .div6 h2{
+    font-size: 37px;
+    text-decoration: underline;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.reasons{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 50vw;
+    height: 40vh;
+    margin-left: 10vw;
+    margin-top: 4vw;
+}
+
+.reason1, .reason2{
+    background-color: #496b54e0;
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-around;
+    width: 20vw;
+    border-radius: 20px;
+}
+
+.reason1 h1, .reason2 h1{
+    font-size: 100px;
+    color: #e0f2e5;
+    margin-left: 40px;
+    margin-top: 0;
+}
+
+.reason1 p, .reason2 p{
+    margin-left: 30px;
+    height: 30%;
+    font-size: 20px;
+}
+
+
+/* ------------------ DIV3 ------------------- */
+
+
+.div3{
+    height: 60vh;
+}
+
+.team{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.member img{
+    border-radius: 50px;
+    height: 100px;
+    width: 100px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+
+.name{
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.descrip{
+    font-weight: 200;
+}
+
+
+/* ------------------ DIV4 ------------------- */
+
+.div4{
+    background-color: #496b548f;
+    display: flex;
+    flex-direction: column;
+}
+
+
+input[type=radio] {
+    display: none;
+  }
+  
+  .card {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transition: transform .4s ease;
+    cursor: pointer;
+  }
+  
+  .containerGalery {
+    width: 100%;
+    max-width: 900px;
+    max-height: 600px;
+    height: 80%;
+    transform-style: preserve-3d;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    align-self: center;
+    margin-top: 40px;
+  }
+  
+  .cards {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+  
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  #item-1:checked ~ .cards #song-3, #item-2:checked ~ .cards #song-1, #item-3:checked ~ .cards #song-2 {
+    transform: translatex(-40%) scale(.8);
+    opacity: .4;
+    z-index: 0;
+  }
+  
+  #item-1:checked ~ .cards #song-2, #item-2:checked ~ .cards #song-3, #item-3:checked ~ .cards #song-1 {
+    transform: translatex(40%) scale(.8);
+    opacity: .4;
+    z-index: 0;
+  }
+  
+  #item-1:checked ~ .cards #song-1, #item-2:checked ~ .cards #song-2, #item-3:checked ~ .cards #song-3 {
+    transform: translatex(0) scale(1);
+    opacity: 1;
+    z-index: 1;
+    
+  }
+
+
+  .div4 p{
+      text-align: center;
+      margin-top: -30px;
+  }
+
+
+  /* ------------------ DIV5 ------------------- */
+
+
+  .div5{
+      padding-top: 30px;
+      display: flex;
+      flex-direction: column;
+      height: 80vh;
+      background-color: #2a3d30e8;
+      color: white;
+  }
+
+  .div5 img{
+      width: 60vw;
+      height: 70%;
+      align-self: center;
+  }
+
+form{
+    display: grid;
+    grid-template-areas: 
+    "name apellidos telefono"
+    "email email asunto"
+    "mensaje mensaje mensaje";
+    /* background-color: yellowgreen; */
+    width: 70vw;
+    margin-left: 50px;
+    height: 40vh;
+}
+
+#name{
+    grid-area: name;
+}
+#apellidos{
+    grid-area: apellidos;
+}
+#telefono{
+    grid-area: telefono;
+}
+#email{
+    grid-area: email;
+}
+#asunto{
+    grid-area: asunto;
+}
+#mensaje{
+    grid-area: mensaje;
+    height: 100px;
+}
+
+form button{
+    width: 50%;
+    height: 60%;
+    margin-left: 20px;
+}
+
+form input, form select{
+    height: 30px;
+    margin: 10px 20px;
+    background-color: rgba(189, 189, 189, 0.623);
+    border-radius: 10px;
+    border: none;
+    font-family: 'Poppins', sans-serif;
+}

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./estilos/landingPage.css">
+
+    <title>Home</title>
+</head>
+
+<body>
+    <header>
+        <p><a href="login.html">Login</a></p>
+    </header>
+    <div class="contenedor div1">
+        <div class="white"></div>
+        <div class="title">
+            <h1>SoftAir. <br>
+                Conoce mejor tu entorno</h1>
+            <p>Midiendo la contaminación de tu entonrno</p>
+            <button>Mas informacón</button>
+        </div>
+        <div class="foto1">
+            <img src="imagenes/air_quality_hero.jpeg" alt="">
+        </div>
+    </div>
+
+    <div class="contenedor div2">
+        <div class="text">
+            <h2>Por qué <br> nosotros?</h2>
+            <p>Somos el equipo con la experiencia de 3 años</p>
+        </div>
+        <div class="reasons">
+            <div class="reason1">
+                <h1>1</h1>
+                <p>the reason 1</p>
+            </div>
+            <div class="reason2">
+                <h1>2</h1>
+                <p>the reason 2</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="contenedor div3">
+        <div class="text">
+            <h2>Nuestro equipo</h2>
+        </div>
+        <div class="team">
+            <div class="member">
+                <img src="imagenes/el-personaje-de-dibujos-animados-un-animal-pato-lindo-se-está-bañando-alegremente-en-baño-caricatura-ilustración-feliz-212860467.jpeg"
+                    alt="pato1">
+                <div class="name">Jorge</div>
+                <div class="descrip">Back-end developer</div>
+            </div>
+            <div class="member">
+                <img src="imagenes/istockphoto-1257358133-1024x1024.jpeg">
+                <div class="name">Chenyi</div>
+                <div class="descrip">Back-end developer</div>
+            </div>
+            <div class="member">
+                <img src="imagenes/istockphoto-1269500660-1024x1024.jpeg" alt="">
+                <div class="name">David</div>
+                <div class="descrip">Back-end developer</div>
+            </div>
+            <div class="member">
+                <img src="imagenes/lindo-pato-nadando-agua-aislado-dibujos-animados-animal-naturaleza-ilustracion-estilo-plano-icono-etiqueta_451085-971.webp"
+                    alt="">
+                <div class="name">Kati</div>
+                <div class="descrip">Back-end developer</div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="contenedor div4">
+        <div class="text" style="text-align: center;">
+            <h2>Como funciona</h2>
+        </div>
+
+        <!-- Flickity HTML init -->
+        <div class="containerGalery">
+            <input type="radio" name="slider" id="item-1" checked>
+            <input type="radio" name="slider" id="item-2">
+            <input type="radio" name="slider" id="item-3">
+          <div class="cards">
+            <label class="card" for="item-1" id="song-1">
+              <img src="imagenes/descarga.png" alt="song">
+            </label>
+            <label class="card" for="item-2" id="song-2">
+              <img src="imagenes/icon-paso2.png" alt="song">
+            </label>
+            <label class="card" for="item-3" id="song-3">
+              <img src="imagenes/icon-paso3.png" alt="song">
+            </label>
+          </div>
+        </div>
+
+        <p>Algun texto sobre todos los pasos</p>
+    </div>
+
+    <div class="contenedor div5">
+        <div class="text">
+            <h2>Zonas</h2>
+        </div>
+        <p style="text-align: center;">Nosotros trabajamos por la zona de Gandia</p>
+        <img src="imagenes/Captura de Pantalla 2022-11-03 a las 16.26.23.png" alt="">
+    </div>
+
+
+    <div class="contenedor div6">
+        <div class="text">
+            <h2>Contactanos</h2>
+        </div>
+        <form action="contact.php" method="post">
+            <input type="text" name="nombre" id="name">
+            <input type="text" name="apellidos" id="apellidos">
+            <input type="text" name="movil" id="telefono">
+            <input type="email" name="email" id="email">
+            <select name="asunto" id="asunto">
+                <option value="atencion">Atención cliente</option>
+                <option value="info">Información</option>
+                <option value="quejas">Quejas</option>
+                <option value="otros">Otros</option>
+            </select>
+            <input type="text" name="mensaje" id="mensaje">
+
+              <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <footer>
+        <div class="contactInfo">
+            <div class="datos">
+                <h3>Contact Information</h3>
+                <p>644687774 <br> correo@gmail.com</p>
+            </div>
+            <div class="semana">
+                <p>De Lunes a Viernes <br>9:00 - 18:00</p>
+            </div>
+            <div class="direccion">
+                Carrer de Paraninf, 1, 46730 <br>
+                Campus de la Universidad <br>
+                Politecnica de Gandia
+            </div>
+        </div>
+        <div class="subscribe"></div>
+    </footer>
+</body>
+
+</html>

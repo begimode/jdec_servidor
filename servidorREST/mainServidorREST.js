@@ -312,7 +312,7 @@ async function main() {
 	// arranco el servidor
 	//  
 	var servicio = servidorExpress.listen(8080, function () {
-		console.log("servidor REST escuchando en el puerto 8080: http://localhost:8080/Aplicacion.html")
+		console.log("servidor REST escuchando en el puerto 8080: http://localhost:8080/index.html")
 	})
 
 	//  

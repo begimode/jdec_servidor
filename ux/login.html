@@ -1,40 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-<html>
-
 <head>
-    <meta charset="utf-8" />
-    <title> Editar Perfil </title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
 
-    <!-- ---------------------------------------------------- -->
-    <!-- Insertar Scripts-->
-    <script src="logicaFake/insertarUsuario.js"></script>
+    <link rel="stylesheet" href="./estilos/registrar_login.css">
+
     <script src="logicaFake/buscarUsuario.js"></script>
     <script src="logicaFake/desencriptar.js"></script>
     <script src="logicaFake/verify.js"></script>
     <script src="logicaFake/auth.js"></script>
     <script src="logicaFake/generateToken.js"></script>
 
-    <!-- Registrar -->
-    <script>
-        function registrar() {
-            var correo = document.getElementById("correo").value
-            var contrasenya = document.getElementById("contrasenya").value
-            var telefono = document.getElementById("telefono").value
-            var nombre = document.getElementById("nombre").value
-            var apellidos = document.getElementById("apellidos").value
+</head>
 
-            var datos = { correo: correo, contrasenya: contrasenya, telefono: parseInt(telefono), nombre: nombre, apellidos: apellidos, estado: "No Verificado" }
-
-            insertarUsuario(datos, function (err, res) {
-                // cuando tenga el resultado lo muestr
-                if (err) {
-                    alert(" hubo un error de transmisión http: " + err)
-                    return
-                }
-            })
-        }
-    </script>
 
     <!-- Login -->
     <script>
@@ -102,60 +83,55 @@
           */
             })
 
-
         }
     </script>
 
-</head>
 
 <body>
 
-    <h3>J.DEC</h3>
-    <h1>Login y Registrar</h1>
+
+    <div class="contenedorRegistrar">
+
+        <div class="imagenRegistrar">
+            <img src="imagenes/463875ad-96de-4f04-9cc2-ea85b836f6c0.jpg" alt="logo_empresa" class="imagenIzq">
+        </div>
 
 
-    <form>
-        Correo:<br>
-        <input id="correo" type="text" name="id" value="">
-        <br>
-    </form>
+        <div class="formularioRegistrar">
 
-    <form>
-        Contraseña:<br>
-        <input id="contrasenya" type="text" name="id" value="">
-        <br>
-    </form>
+            <div class="subTitle">
+                <h1>Login</h2>
+            </div>
 
-    <form>
-        Telefono:<br>
-        <input id="telefono" type="number" name="id" value="">
-        <br>
-    </form>
+            <div class="contenedorInfo">
+    
+                <div class="correo_contraseña">
+                    <input type="email" placeholder="Correo" id="correo">
+                    <input type="password" placeholder="Contraseña" id="contrasenya">
+                </div>
+    
+    
+                <div class="politica_privacidad">
 
-    <form>
-        Nombre:<br>
-        <input id="nombre" type="text" name="id" value="">
-        <br>
-    </form>
+                    <div class="contenedorRecuerdame">
+                        <input class="recuerdame" type="checkbox">Recuérdame</input>
+                    </div>
 
-    <form>
-        Apellidos:<br>
-        <input id="apellidos" type="text" name="id" value="">
-        <br>
-    </form>
+                    <div class="contenedorRegistro">
+                        <a class="registroHref" href="registrar.html">Regístrate</a>
+                    </div>
 
-    <p>
+                </div>
+                <div class="contenedorBoton">
+                    <button class="botonRegistrar" onclick="login()">Iniciar Sesión</button>
+                </div>
 
-        <button type="buton" onclick="login()">Login</button>
+                <a href="recuperarContraseña.html" class="recuperarContraseñaHref">Recuperar Contraseña</a>
+  
+            </div>
 
-    </p>
-
-    <p>
-
-        <button type="buton" onclick="registrar()">Registrar</button>
-
-    </p>
+        </div>
+    </div>
 
 </body>
-
 </html>
