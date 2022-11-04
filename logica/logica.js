@@ -1,6 +1,9 @@
-// .....................................................................
-// Logica.js
-// .....................................................................
+// -------------------------------------------------------------------
+// Archivo: logica.js
+// J.Dec
+// Descripcion: En este archivo se encuentran las funciones de la logica que llamarán a las funciones del servidor
+// -------------------------------------------------------------------
+
 const sqlite3 = require("sqlite3")
 var express = require("express")
 const router = express.Router()
@@ -19,6 +22,8 @@ module.exports = class Logica {
 	// nombreBD: Texto
 	// -->
 	// constructor () -->
+	//
+	// Este constructor crea la
 	// .................................................................
 	constructor(nombreBD, cb) {
 		this.laConexion = new sqlite3.Database(
@@ -98,7 +103,6 @@ module.exports = class Logica {
 	// <--
 	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
 	// .................................................................
-
 	buscarMedicionConID(id) {
 		var textoSQL = "select * from medicion where id=$id";  //$id es un parámetro 
 		var valoresParaSQL = { $id: id } // objeto 

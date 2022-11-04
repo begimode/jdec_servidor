@@ -1,5 +1,21 @@
+// -------------------------------------------------------------------
+// Archivo: generarToken.js
+// J.Dec
+// Descripcion: Este archivo crea un token para crear la sesion de cada usuario
+// -------------------------------------------------------------------
+
 const jwt = require("jsonwebtoken")
 require("dotenv").config();
+
+// .................................................................
+// correo
+// -->
+//  Async AnonymousFunction() <--
+// <--
+// token.sign
+//
+// Esta funcion crea el token con el correo y una clave secreta (.env)
+// .................................................................
 const tokenSign = async (correo) => {
     return jwt.sign(
         {
@@ -12,6 +28,16 @@ const tokenSign = async (correo) => {
     )
 }
 
+
+// .................................................................
+// token
+// -->
+//  Async AnonymousFunction() <--
+// <--
+// hash
+//
+// Esta funcion verifica el token 
+// .................................................................
 const verifyToken = async (token) => {
     try {
         return jwt.verify(token, process.env.SECRET)
@@ -19,5 +45,6 @@ const verifyToken = async (token) => {
         return null
     }
 }
+
 
 module.exports = {tokenSign,verifyToken}

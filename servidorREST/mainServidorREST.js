@@ -1,6 +1,7 @@
 // --------------------------------------------------------------------------------
-// mainServidorREST.js
+// MainServidorREST.js
 // --------------------------------------------------------------------------------
+
 
 var cors = require('cors')
 const express = require('express')
@@ -34,12 +35,15 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	// Reglas del API REST
 	// .......................................................
 
+	// .......................................................
+	// POST /send-email/
+	// .......................................................
 	servidorExpress.post("/send-email", async function (peticion, respuesta) {
 		console.log(" * POST /send-email")
 		await laLogica.enviarCorreo()
 		console.log("Hecho");
 		respuesta.send("OK")
-	})
+	}) //post // send-email
 	// () 
 
 	
@@ -76,13 +80,12 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		
 		// todo ok
 		respuesta.send(JSON.stringify(res))
-	}) // get /medicion id
+	}) // get /todasMediciones
 
 
 	// .......................................................
 	// POST /insertarMedicion
 	// .......................................................
-
 	servidorExpress.post("/insertarMedicion", async function (peticion, respuesta) {
 		console.log(" * POST /insertarMedicion")
 		var datos = JSON.parse(peticion.body)
@@ -96,13 +99,12 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		await laLogica.insertarMedicion(datos)
 		console.log("Hecho");
 		respuesta.send("OK")
-	})
+	}) // post /insertarMedicion
 	// () 
 
 	// .......................................................
 	// POST /insertarUsuario
 	// .......................................................
-
 	servidorExpress.post("/insertarUsuario", async function (peticion, respuesta) {
 		console.log(" * POST /insertarMedicion")
 		var datos = JSON.parse(peticion.body)
@@ -116,7 +118,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		await laLogica.insertarUsuario(datos)
 		console.log("Hecho");
 		respuesta.send("OK")
-	})
+	}) // post /insertarUsuario
 	// () 
 
 	// .......................................................
@@ -137,32 +139,14 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		}
 		// todo ok
 		respuesta.send(JSON.stringify(res[0]))
-	}) // get /medicion id
+	}) // get /usuario <correo>
+
+
+
 
 	// .......................................................
-	// GET /usuario/<correo>
+	// DELETE /borrarConID<id>
 	// .......................................................
-	servidorExpress.get("/usuario2/:correo", async function (peticion, respuesta) {
-		console.log(" * GET /usuario correo ")
-		// averiguo el id
-		var correo = peticion.params.correo
-		// llamo a la función adecuada de la lógica
-		var res = await laLogica.buscarUsuario(correo)
-		console.log(res);
-		// si el array de resultados no tiene una casilla ...
-		if (res.length != 1) {
-			// 404: not found
-			respuesta.status(404).send("no encontré id: " + id)
-			return
-		}
-		// todo ok
-		respuesta.send(JSON.stringify(res[0]))
-	}) // get /medicion id
-
-	// .......................................................
-	// DELETE /insertarMedicion
-	// .......................................................
-
 	servidorExpress.delete("/borrarConID/:id", async function (peticion, respuesta) {
 		console.log(" * DELETE /borrarConID/:id")
 		// averiguo el id
@@ -171,11 +155,13 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		await laLogica.borrarFilasConID("medicion",id)
 		console.log("Borrado");
 		respuesta.send("OK")
-	})
+	}) //delete /borrarConID <id>
 	// () 
 
 	
-	//Token
+	// .......................................................
+	// POST /auth<correo>
+	// .......................................................
 	servidorExpress.post("/auth/:correo", async function (peticion, res) {
 		console.log(" * GET /auth ")
 		var correo = peticion.params.correo
@@ -190,16 +176,22 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		})
 		//res.send(JSON.stringify(res[0]))
 
-	}) // get /medicion id
+	}) //post /auth:correo 
 
+
+	// .......................................................
+	// GET /api
+	// .......................................................
 	servidorExpress.get("/api", async function (peticion, res) {
 		laLogica.validateToken()
 		console.log("Esto es seguro");
 		res.send(JSON.stringify(res[0]))
 
-	}) // get /medicion id
+	}) // get /api
 
-	//Token
+	// .......................................................
+	// POST /generateToke<datos>
+	// .......................................................
 	servidorExpress.post("/generateToken/:datos", async function (peticion, res) {
 		console.log(" * POST /generateToken ")
 		var datos = JSON.parse(peticion.body)
@@ -209,27 +201,37 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		console.log("server " + res2);
 		res.send(JSON.stringify(res2))
 
-	}) // get /medicion id
+	}) // post /generateToken<datos>
 
-	//router.get("/", laLogica.verifyTokenAuth())
+
+	// .......................................................
+	// GET /verify<datos>
+	// .......................................................
 	servidorExpress.get("/verify/:datos", async function (peticion, res) {
 		var datos = JSON.parse(peticion.body)
 		await laLogica.verifyTokenAuth()
 		console.log("Esto es seguro");
 		res.send(JSON.stringify(res[0]))
 
-	}) // get /medicion id
+	}) // get /verify<datos>
 
-	//Desencriptar
+	
+	// .......................................................
+	// POST /desencriptar<datos>
+	// .......................................................
 	servidorExpress.post("/desencriptar/:datos", async function (peticion, res) {
 		console.log(" * POST /desencriptar ")
 		var datos = JSON.parse(peticion.body)
 		var res2 = await laLogica.desencriptar(datos)
 		res.send(JSON.stringify(res2))
 
-	}) // get /medicion id
+	}) // post /desencriptar<datos>
 
 	
+
+	// .......................................................
+	// DELETE /borrarConID<id> //app
+	// .......................................................
 	servidorExpress.get("/desencriptar3", async function (peticion, res) {
 		console.log(" * POST /desencriptar3")
 		const hash = peticion.query.hash
@@ -242,9 +244,12 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		const resultado = {estado: res2}
 		res.send(JSON.stringify(resultado))
 		
-	}) // get /medicion id
+	}) // get /desencriptar3
 
 
+	// .......................................................
+	// POST /actualizar
+	// .......................................................
 	servidorExpress.post("/actualizar", async function (peticion, res) {
 		console.log(" * POST /actualizar")
 		
@@ -260,7 +265,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		await laLogica.cambiarDatosPersonales(datos)
 		console.log("Hecho");
 		res.send("OK")
-	}) // get /medicion id
+	}) // post /actualizar
 
 } // ()
 
