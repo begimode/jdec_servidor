@@ -20,11 +20,15 @@ body{
 .imagenRegistrar{
     width:100%;
     height: 100%;
-    
+    display: flex;
     overflow: hidden;
     background-size: cover;
 }
 
+.imagenRegistrar img{
+    width: 100%;
+    height: 100%;
+}
 
 .formularioRegistrar{
     display: flex;
