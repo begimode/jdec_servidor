@@ -254,14 +254,14 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		console.log(" * POST /actualizar")
 		
 		var datos = JSON.parse(peticion.body)
-		console.log(datos.correoActual)
+		console.log(datos.ID_user)
 		console.log(datos.correo)
 		console.log(datos.telefono)
 		console.log(datos.nombre)
 		console.log(datos.apellidos)
+		//console.log(datos.contrasenya)
+
 		//console.log(datos.estado)
-
-
 		await laLogica.cambiarDatosPersonales(datos)
 		console.log("Hecho");
 		res.send("OK")

@@ -23,7 +23,7 @@ module.exports = class Logica {
 	// -->
 	// constructor () -->
 	//
-	// Este constructor crea la
+	// Este constructor se conecta a la base de datos
 	// .................................................................
 	constructor(nombreBD, cb) {
 		this.laConexion = new sqlite3.Database(
@@ -42,6 +42,8 @@ module.exports = class Logica {
 	// nombreTabla:Texto, id: R
 	// -->
 	// borrarFilasConID() -->
+	//
+	// Descripción: Se le pasa una id y una tabla para borrar los datos.
 	// .................................................................
 	borrarFilasConID(tabla, id) {
 		return new Promise((resolver, rechazar) => {
@@ -63,21 +65,24 @@ module.exports = class Logica {
 
 
 	// .................................................................
-	// datos:{id: null, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// datos:{id: null, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R, ID_placa: R}
 	// -->
 	// insertarMedicion() -->
+	//
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente y se hace una sentencia sql para insertar los datos de la medición en la bd
 	// .................................................................
 
 	insertarMedicion(datos) {
 		var textoSQL =
-			"insert into medicion values($id, $valor, $fecha, $nombreSensor, $longitud, $latitud);"
+			"insert into medicion values($ID_medida, $valor, $fecha, $tipoMedida, $longitud, $latitud, $ID_placa);"
 		var valoresParaSQL = {
-			$id: datos.id,
+			$ID_medida: datos.id,
 			$valor: datos.valor,
 			$fecha: datos.fecha,
-			$nombreSensor: datos.nombreSensor,
+			$tipoMedida: datos.nombreSensor,
 			$longitud: datos.longitud,
-			$latitud: datos.latitud
+			$latitud: datos.latitud,
+			$ID_placa: datos.ID_placa
 		}
 		console.log(datos.valor);
 		console.log(datos.fecha);
@@ -94,7 +99,61 @@ module.exports = class Logica {
 		})
 	} // ()
 
+	// .................................................................
+	// datos:{id: null, motivo: Texto, mensaje: Texto, fecha: Texto, ID_user: R, ID_placa: R,}
+	// -->
+	// insertarNotificacion() -->
+	//
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente y se hace una sentencia sql para insertar los datos de notificación en la bd
+	// .................................................................
 
+	insertarNotificacion(datos) {
+		var textoSQL =
+			"insert into notificacion values($ID_notificacion, $motivo, $mensaje, $fecha, $ID_user, $ID_placa);"
+		var valoresParaSQL = {
+			$ID_notificacion: datos.id,
+			$motivo: datos.motivo,
+			$mensaje: datos.mensaje,
+			$fecha: datos.fecha,
+			$ID_user: datos.ID_user,
+			$ID_placa: datos.ID_placa,
+		}
+		console.log(datos.id);
+		console.log(datos.motivo);
+		console.log(datos.mensaje);
+		console.log(datos.fecha);
+		console.log(datos.ID_user);
+		console.log(datos.ID_placa);
+
+		console.log("");
+
+		// <//> <//> <//> <>/
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.run(textoSQL, valoresParaSQL, function (err) {
+				(err ? rechazar(err) : resolver())
+			})
+		})
+	} // ()
+
+	// .................................................................
+	// id: R
+	// -->
+	// buscarNotificacion() -->
+	// {id: null, motivo: Texto, mensaje: Texto, fecha: Texto, ID_user: R, ID_placa: R,}
+	//
+	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de notificación de esa id
+	// .................................................................
+
+	buscarNotificacion(id) {
+		var textoSQL = "select * from notificacion where ID_user=$ID_user";  //$id es un parámetro 
+		var valoresParaSQL = { $ID_user: id } // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
 
 	// .................................................................
 	// id: R
@@ -102,9 +161,12 @@ module.exports = class Logica {
 	// buscarMedicionConID() <--
 	// <--
 	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// 	
+	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de Medición de esa id
 	// .................................................................
+
 	buscarMedicionConID(id) {
-		var textoSQL = "select * from medicion where id=$id";  //$id es un parámetro 
+		var textoSQL = "select * from medicion where ID_placa=$id";  //$id es un parámetro 
 		var valoresParaSQL = { $id: id } // objeto 
 		return new Promise((resolver, rechazar) => {
 			this.laConexion.all(textoSQL, valoresParaSQL,
@@ -119,6 +181,8 @@ module.exports = class Logica {
 	// mostrarTodasMediciones() <--
 	// <--
 	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// 
+	// Descripción: Se busca una sentencia sql para que te devuelva todos los datos de Medición
 	// .................................................................
 	mostrarTodasMediciones() {
 		var textoSQL = "SELECT * FROM medicion";  //$id es un parámetro 
@@ -133,9 +197,11 @@ module.exports = class Logica {
 	}
 
 	// .................................................................
-	// datos:{correo: Texto, contrasenya: Texto, telefono: int, nombre: Texto, apellidos: Texto}
+	// datos:{ID_user: null, correo: Texto, contrasenya: Texto, telefono: int, nombre: Texto, apellidos: Texto}
 	// -->
 	// insertarUsuario() -->
+	// 
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente y se hace una sentencia sql para insertar los datos del usuario en la bd
 	// .................................................................
 
 	async insertarUsuario(datos) {
@@ -145,8 +211,9 @@ module.exports = class Logica {
 		console.log("Contraseña " + hashPassword);
 
 		var textoSQL =
-			"insert into usuario values($correo, $contrasenya, $telefono, $nombre, $apellidos, $estado);"
+			"insert into usuario values($correo, $contrasenya, $telefono, $nombre, $apellidos, $estado, $ID_user);"
 		var valoresParaSQL = {
+			$ID_user: datos.ID_user,
 			$correo: datos.correo,
 			$contrasenya: hashPassword,
 			$telefono: datos.telefono,
@@ -162,7 +229,7 @@ module.exports = class Logica {
 		console.log(datos.estado);
 		console.log("");
 
-		this.enviarCorreo()
+		//this.enviarCorreo()
 
 		// <//> <//> <//> <>/
 		return new Promise((resolver, rechazar) => {
@@ -173,11 +240,65 @@ module.exports = class Logica {
 	} // ()
 
 	// .................................................................
+	// datos:{id: null, ID_user: R, uuid: Texto, estadoPlaca: R}
+	// -->
+	// insertarPlaca() -->
+	//
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente y se hace una sentencia sql para insertar los datos de la placa en la bd
+	// .................................................................
+
+	async insertarPlaca(datos) {
+		var textoSQL =
+			"insert into placa values($ID_placa, $ID_user, $uuid, $estadoPlaca);"
+		var valoresParaSQL = {
+			$ID_placa: datos.ID_placa,
+			$ID_user: datos.ID_user,
+			$uuid: datos.uuid,
+			$estadoPlaca: datos.estadoPlaca,
+		}
+		console.log(datos.ID_placa);
+		//console.log(datos.contrasenya);
+		console.log(datos.ID_user);
+		console.log(datos.uuid);
+		console.log(datos.estadoPlaca);
+		console.log("");
+
+		// <//> <//> <//> <>/
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.run(textoSQL, valoresParaSQL, function (err) {
+				(err ? rechazar(err) : resolver())
+			})
+		})
+	} // ()
+
+	// .................................................................
+	// id: R 
+	// -->
+	// insertarPlaca() -->
+	// {id: null, ID_user: R, uuid: Texto, estadoPlaca: R}
+	//
+	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de placa de esa id
+	// .................................................................
+
+	buscarPlaca(id) {
+		var textoSQL = "select * from placa where ID_user=$ID_user";  //$id es un parámetro 
+		var valoresParaSQL = { $ID_user: id } // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
+
+	// .................................................................
 	// correo: Texto
 	// -->
 	// buscarUsuario() <--
 	// <--
 	// {correo: Texto, contrasenya: Texto, telefono: int, nombre: Texto, apellidos: Texto}
+	//
+	// Descripción: Mediante un correo que se le pasa se busca una sentencia sql para que te devuelva todos los datos de usuario de ese correo
 	// .................................................................
 
 	buscarUsuario(correo) {
@@ -192,7 +313,13 @@ module.exports = class Logica {
 	}
 	// ()
 
-	//------------------
+
+	// .................................................................
+	// enviarCorreo() 
+	//
+	// Descripción: Se usa la librería nodemailer para que te envíe un correo, configuras el correo desde que se envía y la dirreción del destinatario, además del mensaje y el motivo.
+	// .................................................................
+	
 	enviarCorreo() {
 		var transporter = nodemailer.createTransport({
 			host: "smtp.ethereal.email",
@@ -220,9 +347,17 @@ module.exports = class Logica {
 			}
 		})
 	}
-	//---------------------------------------
+	
 
-	//Token
+	// .................................................................
+	// correo: Texto 
+	// -->
+	// generateToken() -->
+	// Token: Texto
+	//
+	// Descripción: Se usa la librería jwt a la cual le pasas el correo y te crea un token en función a ese correo y una clave secreta para que sea único para cada usuario.
+	// .................................................................
+
 	async generateToken(correo) {
 		console.log("logica1 " + correo);
 		const tokenSession = await jwt.tokenSign(correo)
@@ -232,6 +367,14 @@ module.exports = class Logica {
 			resolver(tokenSession)
 		})
 	}
+
+	// .................................................................
+	// datos: Texto 
+	// -->
+	// verifyTokenAuth() -->
+	//
+	// Descripción: Se usa la librería jwt a la cual le pasas el correo y te crea un token en función a ese correo y una clave secreta para que sea único para cada usuario.
+	// .................................................................
 
 	async verifyTokenAuth(datos) {
 		const token = rew.headers.authorization.split("").pop()
@@ -246,7 +389,14 @@ module.exports = class Logica {
 		}
 	}
 
-	//Desencriptar Contraseña
+	// .................................................................
+	// datos: {hash: Texto, cont: Texto} 
+	// -->
+	// desencriptar() -->
+	// T/F
+	//
+	// Descripción: Se usa la librería encrypt, se pasa la contraseña cifrada y sin cifrar y con la librería se comparan, si es correcto devuelve un true
+	// .................................................................
 
 	async desencriptar(datos) {
 		const checkPassword = await encrypt.compare(datos.cont, datos.hash)
@@ -256,14 +406,30 @@ module.exports = class Logica {
 		})
 	}
 
-	cambiarDatosPersonales(datos) {
-		var textoSQL = "update usuario set nombre=$nombre, apellidos=$apellidos, telefono=$telefono, correo=$correo where correo=$correoActual";  //$id es un parámetro 
+	// .................................................................
+	// datos: {ID_user: R, correo: Texto, nombre: Texto, apellidos: Texto, telefono: R, contrasenya: Texto} 
+	// -->
+	// cambiarDatosPersonales() -->
+	// T/F
+	//
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente, se hace una petición sql para hacer update a los datos con la id_user específica y se modifica la base de datos
+	// .................................................................
+
+
+	async cambiarDatosPersonales(datos) {
+
+		//Encriptamos la contraseña
+		var hashPassword = await encrypt.encrypt(datos.contrasenya)
+		console.log("Contraseña " + hashPassword);
+
+		var textoSQL = "update usuario set nombre=$nombre, apellidos=$apellidos, telefono=$telefono, correo=$correo, contrasenya=$contrasenya where ID_user=$ID_user";  //$id es un parámetro 
 		var valoresParaSQL = {
-			$correoActual: datos.correoActual,
+			$ID_user: datos.ID_user,
 			$correo: datos.correo,
 			$telefono: datos.telefono,
 			$nombre: datos.nombre,
 			$apellidos: datos.apellidos,
+			$contrasenya: hashPassword,
 		} // objeto 
 		return new Promise((resolver, rechazar) => {
 			this.laConexion.all(textoSQL, valoresParaSQL,
