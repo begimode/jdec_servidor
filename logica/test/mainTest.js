@@ -49,6 +49,7 @@ describe("Test 1: Funcionamiento de la logica", function () {
 					nombreSensor: "test.js",
 					longitud: 39,
 					latitud: 0,
+					ID_placa: 1,
 				}
 			)
 			var res = await laLogica.buscarMedicionConID("34")
@@ -60,11 +61,34 @@ describe("Test 1: Funcionamiento de la logica", function () {
 			error = err;
 		}
 	})
+*/
+	// it
+	// ....................................................
+	// ....................................................
+
+	
+	it("puedo insertar una notificacion", async function () {
+		try {
+			await laLogica.insertarNotificacion(
+				{
+					id: null,
+					motivo: "Gilipollas",
+					mensaje: "David HACKER",
+					fecha: "11/12/13",
+					ID_user: 1,
+					ID_placa: 1,
+				}
+			)
+			var res = await laLogica.buscarNotificacion(1)
+		} catch (error) {
+			error = err;
+		}
+	})
 
 	  // it
 	// ....................................................
 	// ....................................................
-	*/
+	
 	/*
 	it("puedo mostrar todas las medicion", async function () {
 		try {
@@ -102,12 +126,13 @@ describe("Test 1: Funcionamiento de la logica", function () {
 	// it
 	// ....................................................
 	// ....................................................
-
+	*
 	it("puedo insertar un usuario", async function () {
 		try {
 			await laLogica.insertarUsuario(
 				{
-					correo: "pepe@gmail.com",
+					ID_user: null,
+					correo: "juan@gmail.com",
 					contrasenya: "pepe",
 					telefono: 643364675,
 					nombre: "Jorge",
@@ -115,17 +140,38 @@ describe("Test 1: Funcionamiento de la logica", function () {
 					estado: "No Verificado",
 				}
 			)
-			var res = await laLogica.buscarUsuario("jorgelarrosaquesada@gmail.com")
-			//assert.equal(res.length, 1, "¿no hay un resulado?")  // -->  (a, b, c) -> if (a!=b) --> return c 
-			assert.equal(res[0].correo, "jorgelarrosaquesada@gmail.com", "¿no es jorgelarrosaquesada@gmail.com?")
-			assert.equal(res[0].contrasenya, "pepe", "¿no es pepe?")
+			var res = await laLogica.buscarUsuario("pepe@gmail.com")
+			assert.equal(res.length, 1, "¿no hay un resulado?")  // -->  (a, b, c) -> if (a!=b) --> return c 
+			//assert.equal(res[0].correo, "jorgelarrosaquesada@gmail.com", "¿no es jorgelarrosaquesada@gmail.com?")
+			//assert.equal(res[0].contrasenya, "pepe", "¿no es pepe?")
 
 		} catch (error) {
 			error = err;
 		}
 	})
+	
+	it("puedo insertar una placa", async function () {
+		try {
+			await laLogica.insertarPlaca(
+				{
+					ID_placa: null,
+					ID_user: 1,
+					uuid: "test",
+					estadoPlaca: 0,
+				}
+			)
+			var res = await laLogica.buscarPlaca(1)
+			//assert.equal(res.length, 1, "¿no hay un resulado?")  // -->  (a, b, c) -> if (a!=b) --> return c 
+			//assert.equal(res[0].correo, "jorgelarrosaquesada@gmail.com", "¿no es jorgelarrosaquesada@gmail.com?")
+			//assert.equal(res[0].contrasenya, "pepe", "¿no es pepe?")
 
+		} catch (error) {
+			console.log(error);
+		}
+	})
+*/
 
+	/*
 	it("auth", async function () {
 		try {
 			var res = await laLogica.generateAccessToken("juan")
@@ -139,7 +185,7 @@ describe("Test 1: Funcionamiento de la logica", function () {
 	// ....................................................
 	// ....................................................
 
-	*/
+	
 
 	it("puedo actualizar los datos", async function () {
 		try {
@@ -158,6 +204,7 @@ describe("Test 1: Funcionamiento de la logica", function () {
 			error = err;
 		}
 	})
+	*/
 
 	it("cerrar conexión a la base de datos",
 		async function () {
