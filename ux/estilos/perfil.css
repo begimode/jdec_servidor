@@ -88,6 +88,55 @@ h1{
     display: none;
 }
 
+.datoActual{
+    display: flex;
+    justify-content: left;
+}
+
+.datoActual p{
+    margin: auto auto auto 10px;
+}
+
+.bg{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    position: relative;
+    /* margin: 20px auto; */
+}
+.circle-right, .circle-left, .mask-right, .mask-left{
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.circle-right, .circle-left{
+    background: #8DCFA3;
+}
+.mask-right, .mask-left{
+    background: rgb(223, 223, 223);
+}
+.circle-right, .mask-right{
+    clip: rect(0,100px,100px,50px);
+}
+.circle-left, .mask-left{
+    clip: rect(0,50px,100px,0);
+}
+.bg .text{
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    font-size: 2rem;
+    color: #5f9471;
+    border-radius: 100%;
+    background: #fff;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
 
 /*  */
 /* NOTIFICACIONES PERFIL */

@@ -30,6 +30,7 @@ function insertarUsuario(datos, cb) {
 				console.log("    no he podido hacer parse de " + resultado)
 
 			} catch (error) {
+				error = null;
 			}
 
 			// en todo caso, aqui el primer parámetro (error = null, porque

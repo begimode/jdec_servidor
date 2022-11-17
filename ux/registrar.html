@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,19 +22,49 @@
         function registrar() {
             var correo = document.getElementById("correo").value
             var contrasenya = document.getElementById("contrasenya").value
+            var contrasenya2 = document.getElementById("contrasenya2").value
             var telefono = document.getElementById("telefono").value
             var nombre = document.getElementById("nombre").value
             var apellidos = document.getElementById("apellidos").value
 
-            var datos = { correo: correo, contrasenya: contrasenya, telefono: parseInt(telefono), nombre: nombre, apellidos: apellidos, estado: "No Verificado" }
+            //console.log("test");
 
-            insertarUsuario(datos, function (err, res) {
-                // cuando tenga el resultado lo muestr
-                if (err) {
-                    alert(" hubo un error de transmisión http: " + err)
-                    return
+            var datos = { correo: correo, contrasenya: contrasenya, telefono: parseInt(telefono), nombre: nombre, apellidos: apellidos, estado: "No Verificado", ID_user: null }
+
+            if (document.getElementById("check").checked) {
+                if (contrasenya == contrasenya2) {
+                    insertarUsuario(datos, function (err, res) {
+                        // cuando tenga el resultado lo muestr
+
+                        console.log(err);
+                        console.log(res);
+
+                        if (err) {
+                            alert(" hubo un error de transmisión http: " + err)
+                            return
+                        }
+
+                        if (err == null) {
+                            var errorTag = document.getElementById("errorTag")
+                            errorTag.textContent = "Se ha producido un error"
+
+                        }
+
+                        if (res == "OK") {
+                            window.location.href = "login.html"
+                        }
+
+                    })
+                }else{
+                    var errorTag = document.getElementById("errorTag")
+                    errorTag.textContent = "La contraseña no coincide"
                 }
-            })
+
+            } else {
+                var errorTag = document.getElementById("errorTag")
+                errorTag.textContent = "Acepta la Política de Privacidad para aceptarla"
+            }
+
         }
     </script>
 
@@ -46,7 +77,7 @@
 
 
         <div class="imagenRegistrar">
-            <img src="imagenes/Ilustración_sin_título 10.jpg" alt="logo_empresa">
+            <img src="imagenes/login_portada.jpg" alt="logo_empresa">
         </div>
 
 
@@ -58,20 +89,27 @@
 
             <div class="contenedorInfo">
                 <div class="nombre_apellidos">
-                    <input type="text" class="nombre" placeholder="Nombre">
-                    <input type="text" class="apellidos" placeholder="Apellidos">
+                    <input type="text" class="nombre" placeholder="Nombre" id="nombre">
+                    <input type="text" class="apellidos" placeholder="Apellidos" id="apellidos">
                 </div>
-    
+
+                <div class="correo_contraseña">
+                    <input type="text" placeholder="Telefono" id="telefono">
+                </div>
+
+
                 <div class="correo_contraseña">
                     <input type="email" placeholder="Correo" id="correo">
                     <input type="password" placeholder="Contraseña" id="contrasenya">
+                    <input type="password" placeholder="Repetir Contraseña" id="contrasenya2">
+
                 </div>
-    
-    
+
                 <div class="politica_privacidad">
 
                     <div class="contenedorPrivacidad">
-                        <input class="privacidad" type="checkbox">Acepto la <a href="./"> política de privacidad</a></input>
+                        <input id="check" class="privacidad" type="checkbox">Acepto la <a href="./"> política de
+                            privacidad</a></input>
                     </div>
 
                     <div class="contenedorLogin">
@@ -80,13 +118,18 @@
 
                 </div>
                 <div class="contenedorBoton">
-                    <button class="botonRegistrar" onclick="registrar()">Registrarse</button>  
+                    <button class="botonRegistrar" onclick="registrar()">Registrarse</button>
                 </div>
-  
+
+                <div class="correo_contraseña">
+                    <p id="errorTag"></p>
+                </div>
+
             </div>
 
         </div>
     </div>
 
 </body>
+
 </html>

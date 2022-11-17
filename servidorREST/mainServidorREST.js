@@ -50,26 +50,21 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	// .......................................................
 	// GET /medicion/<id>
 	// .......................................................
-	servidorExpress.get("/medicion/:id", async function (peticion, respuesta) {
+	servidorExpress.get("/buscarMedicionConID/:id", async function (peticion, respuesta) {
 		console.log(" * GET /medicion id ")
 		// averiguo el id
 		var id = peticion.params.id
 		// llamo a la función adecuada de la lógica
 		var res = await laLogica.buscarMedicionConID(id)
 		console.log(res);
-		// si el array de resultados no tiene una casilla ...
-		if (res.length != 1) {
-			// 404: not found
-			respuesta.status(404).send("no encontré id: " + id)
-			return
-		}
 		// todo ok
-		respuesta.send(JSON.stringify(res[0]))
+		respuesta.send(JSON.stringify(res))
 	}) // get /medicion id
 
 
 	// .......................................................
 	// GET /todasMediciones
+	//  R --> todasMediciones --> <{ID_medida: R, valor: R, fecha: Texto, Longitud: Z, Latitud: Z, ID_placa: R}>
 	// .......................................................
 	servidorExpress.get("/todasMediciones", async function (peticion, respuesta) {
 		console.log(" * GET /todasMediciones ")
@@ -85,6 +80,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 
 	// .......................................................
 	// POST /insertarMedicion
+	// {ID_medida: R, valor: R, fecha: Texto, Longitud: Z, Latitud: Z, ID_placa: R} --> insertarMedicion
 	// .......................................................
 	servidorExpress.post("/insertarMedicion", async function (peticion, respuesta) {
 		console.log(" * POST /insertarMedicion")
@@ -104,25 +100,39 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 
 	// .......................................................
 	// POST /insertarUsuario
+	// {correo: Texto, contrasenya: Texto, telefono: R, nombre: Texto, apellidos: Texto, estado: Texto, ID_user: R} --> insertarUsuario
 	// .......................................................
 	servidorExpress.post("/insertarUsuario", async function (peticion, respuesta) {
-		console.log(" * POST /insertarMedicion")
-		var datos = JSON.parse(peticion.body)
-		//console.log(datos.id)
-		console.log(datos.correo)
-		console.log(datos.telefono)
-		console.log(datos.nombre)
-		console.log(datos.apellidos)
-		console.log(datos.estado)
+		var error = null
+		try{
+			console.log(" * POST /insertarMedicion")
+			var datos = JSON.parse(peticion.body)
+			//console.log(datos.id)
+			//console.log(datos.correo)
+			//console.log(datos.telefono)
+			//console.log(datos.nombre)
+			//console.log(datos.apellidos)
+			//console.log(datos.estado)
+	
+			await laLogica.insertarUsuario(datos)
+			console.log("Hecho");
+			respuesta.send("OK")
+		}catch(err){
+			console.log(err);
+			console.log("No se ha creado usuario");
 
-		await laLogica.insertarUsuario(datos)
-		console.log("Hecho");
-		respuesta.send("OK")
+			err = error
+			console.log(err);
+			respuesta.send(err)
+
+		}
+		
 	}) // post /insertarUsuario
 	// () 
 
 	// .......................................................
 	// GET /usuario/<correo>
+	// Texto --> GET usuario --> {correo: Texto, contrasenya: Texto, telefono: R, nombre: Texto, apellidos: Texto, estado: Texto, ID_user: R}
 	// .......................................................
 	servidorExpress.get("/usuario/:correo", async function (peticion, respuesta) {
 		console.log(" * GET /usuario correo ")
@@ -146,6 +156,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 
 	// .......................................................
 	// DELETE /borrarConID<id>
+	// R --> DELETE borrarConID
 	// .......................................................
 	servidorExpress.delete("/borrarConID/:id", async function (peticion, respuesta) {
 		console.log(" * DELETE /borrarConID/:id")
@@ -218,6 +229,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	
 	// .......................................................
 	// POST /desencriptar<datos>
+	// {hash: Texto, cont: Texto} --> POST desencriptar --> T/F
 	// .......................................................
 	servidorExpress.post("/desencriptar/:datos", async function (peticion, res) {
 		console.log(" * POST /desencriptar ")
@@ -230,7 +242,8 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	
 
 	// .......................................................
-	// DELETE /borrarConID<id> //app
+	// GET /desencriptar3
+	// {hash: Texto, cont: Texto} --> GET desencriptar3 --> T/F
 	// .......................................................
 	servidorExpress.get("/desencriptar3", async function (peticion, res) {
 		console.log(" * POST /desencriptar3")
@@ -249,6 +262,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 
 	// .......................................................
 	// POST /actualizar
+	// {correo: Texto, contrasenya: Texto, telefono: R, nombre: Texto, apellidos: Texto, estado: Texto, ID_user: R} --> POST actualizar
 	// .......................................................
 	servidorExpress.post("/actualizar", async function (peticion, res) {
 		console.log(" * POST /actualizar")
@@ -266,6 +280,26 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		console.log("Hecho");
 		res.send("OK")
 	}) // post /actualizar
+
+	// .......................................................
+	// GET /placas/<ID_user>
+	// .......................................................
+	servidorExpress.get("/buscarPlacaConId/:ID_user", async function (peticion, respuesta) {
+		console.log(" * GET /placa ID_user ")
+		// averiguo el id
+		var ID_user = peticion.params.ID_user;
+		// llamo a la función adecuada de la lógica
+		var res = await laLogica.buscarPlacaConId(ID_user);
+		console.log(res);
+		// si el array de resultados no tiene una casilla ...
+		if (res.length != 1) {
+			// 404: not found
+			respuesta.status(404).send("no encontré placa con esa id: " + ID_user)
+			return
+		}
+		// todo ok
+		respuesta.send(JSON.stringify(res[0]))
+	}) // get /medicion id
 
 } // ()
 

@@ -160,13 +160,14 @@ module.exports = class Logica {
 	// -->
 	// buscarMedicionConID() <--
 	// <--
-	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// {ID_user: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
 	// 	
 	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de Medición de esa id
 	// .................................................................
 
 	buscarMedicionConID(id) {
-		var textoSQL = "select * from medicion where ID_placa=$id";  //$id es un parámetro 
+		console.log("buscarMedicionConId");
+		var textoSQL = "select * from medicion where ID_placa=$id";  //$id es un parámetro
 		var valoresParaSQL = { $id: id } // objeto 
 		return new Promise((resolver, rechazar) => {
 			this.laConexion.all(textoSQL, valoresParaSQL,
@@ -205,10 +206,9 @@ module.exports = class Logica {
 	// .................................................................
 
 	async insertarUsuario(datos) {
-
 		//Encriptamos la contraseña
 		var hashPassword = await encrypt.encrypt(datos.contrasenya)
-		console.log("Contraseña " + hashPassword);
+		//console.log("Contraseña " + hashPassword);
 
 		var textoSQL =
 			"insert into usuario values($correo, $contrasenya, $telefono, $nombre, $apellidos, $estado, $ID_user);"
@@ -221,12 +221,12 @@ module.exports = class Logica {
 			$apellidos: datos.apellidos,
 			$estado: datos.estado,
 		}
-		console.log(datos.usuario);
+		//console.log(datos.usuario);
 		//console.log(datos.contrasenya);
-		console.log(datos.telefono);
-		console.log(datos.nombre);
-		console.log(datos.apellidos);
-		console.log(datos.estado);
+		//console.log(datos.telefono);
+		//console.log(datos.nombre);
+		//console.log(datos.apellidos);
+		//console.log(datos.estado);
 		console.log("");
 
 		//this.enviarCorreo()
@@ -272,17 +272,18 @@ module.exports = class Logica {
 	} // ()
 
 	// .................................................................
-	// id: R 
+	// id: R
 	// -->
-	// insertarPlaca() -->
-	// {id: null, ID_user: R, uuid: Texto, estadoPlaca: R}
-	//
-	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de placa de esa id
+	// buscarPlacaConID() <--
+	// <--
+	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// 	
+	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de la Placa de esa id
 	// .................................................................
-
-	buscarPlaca(id) {
+	buscarPlacaConId(ID_user) {
+		console.log("buscarPlacaConId");
 		var textoSQL = "select * from placa where ID_user=$ID_user";  //$id es un parámetro 
-		var valoresParaSQL = { $ID_user: id } // objeto 
+		var valoresParaSQL = { $ID_user: ID_user } // objeto 
 		return new Promise((resolver, rechazar) => {
 			this.laConexion.all(textoSQL, valoresParaSQL,
 				(err, res) => {
@@ -290,6 +291,8 @@ module.exports = class Logica {
 				})
 		})
 	}
+	// ()
+
 
 	// .................................................................
 	// correo: Texto
