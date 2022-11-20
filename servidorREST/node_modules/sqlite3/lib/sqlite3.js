@@ -146,7 +146,7 @@ Statement.prototype.map = function() {
 
 let isVerbose = false;
 
-const supportedEvents = [ 'trace', 'profile', 'insert', 'update', 'delete' ];
+const supportedEvents = [ 'trace', 'profile', 'change' ];
 
 Database.prototype.addListener = Database.prototype.on = function(type) {
     const val = EventEmitter.prototype.addListener.apply(this, arguments);
@@ -203,5 +203,5 @@ sqlite3.verbose = function() {
         isVerbose = true;
     }
 
-    return this;
+    return sqlite3;
 };

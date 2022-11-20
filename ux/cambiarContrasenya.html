@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Contraseña</title>
+
+    <link rel="stylesheet" href="./estilos/registrar_login.css">
+    <script src="logicaFake/cambiarContrasenya.js"></script>
+
+    <script>
+        function enviarContrasenya() {
+            correoNuevo = document.getElementById("email").value
+
+            //Generar contraseña random
+            var result = '';
+            var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var charactersLength = characters.length;
+            for (var i = 0; i < 6; i++) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+            }
+
+            var datos = {
+                correo: correoNuevo,
+                text: result
+            };
+            
+            cambiarContrasenya(datos, function (err, res) {
+                if (err) {
+                    alert(" hubo un error de transmisión http: " + err);
+                    return;
+                } else {
+                    console.log("Cambiar contrasenya");
+                }
+                window.location.href = "login.html"
+            });
+            
+        }
+    </script>
+
+</head>
+
+<body>
+
+    <div class="contenedorRegistrar">
+
+        <div class="imagenRegistrar">
+            <img src="imagenes/login_portada.jpg" alt="logo_empresa">
+        </div>
+
+
+        <div class="formularioRegistrar">
+
+            <div class="subTitle">
+                <h1>Recuperar Contraseña</h2>
+            </div>
+
+            <div class="contenedorInfo">
+
+                <div class="correo_contraseña">
+                    <input type="email" placeholder="Correo" id="email">
+                </div>
+
+
+                <div class="contenedorBoton">
+                    <button class="botonRegistrar" onclick="enviarContrasenya()">Enviar</button>
+                </div>
+
+            </div>
+
+        </div>
+        
+        
+    </div>
+
+</body>
+
+</html>

@@ -301,6 +301,34 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		respuesta.send(JSON.stringify(res[0]))
 	}) // get /medicion id
 
+		// .......................................................
+	// POST /cambiarContrasenya/correo 
+	// .......................................................
+
+	servidorExpress.post("/cambiarContrasenya", async function (peticion, res) {
+		var error = null
+		try{
+			console.log(" * POST /cambiarContrasenya")
+		
+			var datos = JSON.parse(peticion.body)
+			console.log(datos.correo)
+		
+			//console.log(datos.contrasenya)
+	
+			//console.log(datos.estado)
+			await laLogica.cambiarContrasenya(datos)
+			console.log("Hecho");
+			res.send("OK")
+		}catch(err){
+			console.log(err);
+			console.log("Ese usuario no existe");
+
+			err = error
+			console.log(err);
+			res.send(err)
+		}
+		
+	}) // post /actualizar
 } // ()
 
 // --------------------------------------------------------------------------------

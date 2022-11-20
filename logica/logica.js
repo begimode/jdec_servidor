@@ -229,7 +229,13 @@ module.exports = class Logica {
 		//console.log(datos.estado);
 		console.log("");
 
-		//this.enviarCorreo()
+		var configurarCorreo = {
+			correo: datos.correo,
+			text: "Gracias por registrarte en SOFTAIR. Bienvenido " + datos.nombre,
+			subject: "Bienvenido a SOFTAIR"
+		}
+
+		this.enviarCorreo(configurarCorreo)
 
 		// <//> <//> <//> <>/
 		return new Promise((resolver, rechazar) => {
@@ -318,32 +324,32 @@ module.exports = class Logica {
 
 
 	// .................................................................
-	// enviarCorreo() 
+	//  {datos} --> enviarCorreo() 
 	//
 	// Descripción: Se usa la librería nodemailer para que te envíe un correo, configuras el correo desde que se envía y la dirreción del destinatario, además del mensaje y el motivo.
 	// .................................................................
 	
-	enviarCorreo() {
+	async enviarCorreo(datos) {
 		var transporter = nodemailer.createTransport({
-			host: "smtp.ethereal.email",
+			host: "smtp.gmail.com",
 			port: 587,
 			secure: false, // true for 465, false for other ports
 			auth: {
-				user: "fredrick47@ethereal.email", // generated ethereal user
-				pass: "6pYGRf7GsHrK2NjFvq", // generated ethereal password
+				user: "softairjdec@gmail.com", // generated ethereal user
+				pass: "rvlhohzrrrvzdboa", // generated ethereal password
 			}
 		})
 
 		var mailOptions = {
-			from: "bernita.lueilwitz62@ethereal.email",
-			to: "claire.carroll78@ethereal.email",
-			subject: "hola que dices",
-			text: "hola que dices"
+			from: "admin",
+			to: datos.correo,
+			subject: datos.subject,
+			text: datos.text,
 		}
 
 		transporter.sendMail(mailOptions, (error, info) => {
 			if (error) {
-				res.status(500).send(error.message);
+				//res.status(500).send(error.message);
 			} else {
 				console.log("Email enviado");
 				res.status(200).json(req.body)
@@ -442,6 +448,47 @@ module.exports = class Logica {
 		})
 	}
 
+
+
+	// .................................................................
+	// datos: correo: Texto, contrasenya: Texto} 
+	// -->
+	// cambiarContrasenya() -->
+	// T/F
+	//
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente, se hace una petición sql para hacer update a los datos con el correo específica y se modifica la base de datos
+	// .................................................................
+
+	async cambiarContrasenya(datos) {
+
+		console.log(datos.text);
+		//Encriptamos la contraseña
+		var hashPassword = await encrypt.encrypt(datos.text)
+		console.log("Contraseña " + hashPassword);
+
+		var textoSQL = "update usuario set contrasenya=$contrasenya where correo=$correo";  //$id es un parámetro 
+		var valoresParaSQL = {
+			$correo: datos.correo,
+			$contrasenya: hashPassword,
+		} // objeto 
+		
+		var configurarCorreo = {
+			correo: datos.correo,
+			text: datos.text,
+			subject: "Has solicitado el cambio de contraseña"
+		}
+
+		await this.enviarCorreo(configurarCorreo)
+
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					console.log("pepe" + res);
+					console.log("juan" + err);
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
 	// .................................................................
 	// cerrar() -->
 	// .................................................................
