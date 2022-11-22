@@ -186,7 +186,64 @@ describe("Test 1: Funcionamiento de la logica", function () {
 		}
 	) // it
 
+
+	// it
+	// ....................................................
+	// ....................................................
+	it("puedo buscar una placa", async function () {
+		var err = null; 
+		try {
+			await laLogica.insertarPlaca(
+				{
+					ID_placa: 999,
+					ID_user: 999,
+					uuid: "test",
+					estadoPlaca: "test", 
+				}
+			)
+			var res = await laLogica.buscarPlacaConId(99)
+			//assert.equal(res.length, 1, "¿no hay un resulado?")  // -->  (a, b, c) -> if (a!=b) --> return c 
+			assert.equal(res[0].uuid, "test", "¿no es test?")
+			
+
+		} catch (error) {
+			error = err;
+		}
+	})
+
 	
+	// it
+	// ....................................................
+	// .................................................... 
+	it("puedo buscar un usuario", async function () {
+		var err = null; 
+		try {
+			var res = await laLogica.buscaUsuario("test")
+			//assert.equal(res.length, 1, "¿no hay un resulado?")
+			assert.equal(res[0].nombre, "test", "¿no es test?")
+			
+
+		} catch (error) {
+			console.log(error)
+		}
+	})
+
+
+	// it
+	// ....................................................
+	// .................................................... 
+	it("puedo buscar una medicion", async function () {
+		var err = null; 
+		try {
+			var res = await laLogica.buscarMedicionConID(102)
+			//assert.equal(res.length, 1, "¿no hay un resulado?")  // -->  (a, b, c) -> if (a!=b) --> return c 
+			assert.equal(res[0].valor, 2, "¿no es 32?")
+			
+
+		} catch (error) {
+			error = err;
+		}
+	})
 
 })
 
