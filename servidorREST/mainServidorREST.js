@@ -179,7 +179,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		// si el array de resultados no tiene una casilla ...
 		if (res.length != 1) {
 			// 404: not found
-			respuesta.status(404).send("no encontré id: " + id)
+			respuesta.status(404).send("no encontré id: " + correo)
 			return
 		}
 		// todo ok
