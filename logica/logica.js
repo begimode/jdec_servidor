@@ -299,6 +299,63 @@ module.exports = class Logica {
 	}
 	// ()
 
+	// .................................................................
+	// datos:{id: null, motivo: Texto, mensaje: Texto, fecha: Texto, ID_user: R, ID_placa: R,}
+	// -->
+	// insertarNotificacion() -->
+	//
+	// Descripción: Se le pasa un objeto con los datos mencionados anteriormente y se hace una sentencia sql para insertar los datos de notificación en la bd
+	// .................................................................
+
+	insertarNotificacion(datos) {
+		var textoSQL =
+			"insert into notificacion values($ID_notificacion, $motivo, $mensaje, $fecha, $ID_user, $ID_placa);"
+		var valoresParaSQL = {
+			$ID_notificacion: datos.id,
+			$motivo: datos.motivo,
+			$mensaje: datos.mensaje,
+			$fecha: datos.fecha,
+			$ID_user: datos.ID_user,
+			$ID_placa: datos.ID_placa,
+		}
+		console.log(datos.id);
+		console.log(datos.motivo);
+		console.log(datos.mensaje);
+		console.log(datos.fecha);
+		console.log(datos.ID_user);
+		console.log(datos.ID_placa);
+
+		console.log("");
+
+		// <//> <//> <//> <>/
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.run(textoSQL, valoresParaSQL, function (err) {
+				(err ? rechazar(err) : resolver())
+			})
+		})
+	} // ()
+
+	
+	// .................................................................
+	// id: R
+	// -->
+	// buscarNotificacion() -->
+	// {id: null, motivo: Texto, mensaje: Texto, fecha: Texto, ID_user: R, ID_placa: R,}
+	//
+	// Descripción: Mediante una id que se le pasa se busca una sentencia sql para que te devuelva todos los datos de notificación de esa id
+	// .................................................................
+
+	buscarNotificacion(id) {
+		var textoSQL = "select * from notificacion where ID_user=$ID_user";  //$id es un parámetro 
+		var valoresParaSQL = { $ID_user: id } // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
+
 
 	// .................................................................
 	// correo: Texto
@@ -483,8 +540,6 @@ module.exports = class Logica {
 		return new Promise((resolver, rechazar) => {
 			this.laConexion.all(textoSQL, valoresParaSQL,
 				(err, res) => {
-					console.log("pepe" + res);
-					console.log("juan" + err);
 					(err ? rechazar(err) : resolver(res))
 				})
 		})

@@ -354,7 +354,7 @@ footer p{
 
 /* --------------- DIV7 ---------- */
 .iconos{
-    /* width: 100%; */
+  /*  width: 100%; */
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -362,7 +362,11 @@ footer p{
 }
 
 .div7{
-    height: 98vh;
+    height: 100%;
+}
+
+.div72 .iconos{
+    justify-content: space-around;
 }
 
 .icon{

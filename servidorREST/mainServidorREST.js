@@ -46,6 +46,41 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	}) //post // send-email
 	// () 
 
+	// .......................................................
+    // GET /notificacion /id
+    // .......................................................
+    servidorExpress.get("/notificacion/:id", async function (peticion, respuesta) {
+        console.log(" * GET /notificacion ");
+        var id = peticion.params.id;
+        console.log(id);
+        // llamo a la función adecuada de la lógica
+        var res = await laLogica.buscarNotificacion(id)
+        console.log(res);
+        // si el array de resultados no tiene una casilla ...
+
+        // todo ok
+        respuesta.send(JSON.stringify(res))
+    }) // get /todasMediciones
+
+    // .......................................................
+    // POST /insertarNotificacion
+    // .......................................................
+    servidorExpress.post("/insertarNotificacion", async function (peticion, respuesta) {
+        console.log(" * POST /insertarNotificacion")
+        var datos = JSON.parse(peticion.body)
+        //console.log(datos.id)
+        console.log(datos.ID_notificacion)
+        console.log(datos.motivo)
+        console.log(datos.mensaje)
+        // console.log(datos.longitud)
+        // console.log(datos.latitud)
+
+        await laLogica.insertarNotificacion(datos)
+        console.log("Hecho");
+        respuesta.send("OK")
+    }) // post /insertarMedicion
+    // ()
+
 	
 	// .......................................................
 	// GET /medicion/<id>

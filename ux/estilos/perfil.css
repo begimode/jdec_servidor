@@ -16,9 +16,9 @@ body{
 
 .contenedor{
     height: 99vh;
-    width: 15vw;
+    min-width: 300px;
     background-color: #E7E4E4;
-    position: absolute;
+    position: fixed;
     display: flex;
     flex-direction: column;
 }
@@ -68,12 +68,12 @@ h3{
 
 
 .perfilContenido{
-    width: 85vw;
-    margin-left: 15vw;
+    width: 100%;
+    /* margin-left: 300px; */
     z-index: 2;
     height: 100%;
     padding-top: 100px;
-    padding-left: 40px;
+    padding-left: 350px;
 }
 
 h1{
@@ -175,3 +175,21 @@ form input{
     margin: 20px;
 }
 
+.accordion-button p{
+    font-size: 20px;
+}
+/*  */
+/* PREGUNTAS PERFIL */
+/*  */
+
+#faqsPerfil h3{
+    color: Black;
+}
+
+#faqsPerfil{
+    padding-right: 17px;
+}
+
+#faqsPerfil .row{
+    margin-bottom: 200px!important;
+}
