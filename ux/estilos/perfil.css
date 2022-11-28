@@ -67,6 +67,10 @@ h3{
 /*  */
 
 
+.datoActual{
+    margin-bottom: 20px;
+}
+
 .perfilContenido{
     width: 100%;
     /* margin-left: 300px; */
@@ -84,7 +88,7 @@ h1{
     width:50%
 }
 
-.ajustesPerfil, .notifPerfil{
+.ajustesPerfil, .notifPerfil,.faqsPerfil{
     display: none;
 }
 
@@ -137,6 +141,7 @@ h1{
     top: 10px;
     left: 10px;
 }
+
 
 /*  */
 /* NOTIFICACIONES PERFIL */
