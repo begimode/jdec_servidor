@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,74 +18,77 @@
 </head>
 
 
-    <!-- Login -->
-    <script>
-        function login() {
-            var correo = document.getElementById("correo").value
-            var contrasenya = document.getElementById("contrasenya").value
+<!-- Login -->
+<script>
+    function login() {
+        var correo = document.getElementById("correo").value
+        var contrasenya = document.getElementById("contrasenya").value
+        var idUser;
 
+        buscarUsuario(correo, function (err, res) {
+            // cuando tenga el resultado lo muestro
+            if (err) {
+                alert(" hubo un error de transmisión http: " + err)
+                return
+            } else if (res.error) {
+                alert(" hubo un error en la llamada: " + JSON.stringify(res.error))
+                return
+            } else {
+                console.log("Los datos de res son: " + res.ID_user);
+                idUser = res.ID_user;
+            }
 
-            buscarUsuario(correo, function (err, res) {
-                // cuando tenga el resultado lo muestro
-                if (err) {
-                    alert(" hubo un error de transmisión http: " + err)
-                    return
-                } else if (res.error) {
-                    alert(" hubo un error en la llamada: " + JSON.stringify(res.error))
-                    return
+            var datosCont = { hash: res.contrasenya, cont: contrasenya }
+            console.log(datosCont);
+            /*
+                    desencriptar(datosCont, function (err, res) {
+                      console.log(res);
+                        if(res == true){
+                          window.location.href = "index.html"
+                        }
+                        else{
+                          console.log("Incorrecto");
+                        }
+                    })
+            
+                    */
+            desencriptar(datosCont, function (err, res) {
+                console.log(res);
+                if (res == true) {
+                    generateToken(correo, function (err, res) {
+                        window.location.href = "Perfil.html?id=" + idUser;
+                    })
+
                 }
-
-                var datosCont = { hash: res.contrasenya, cont: contrasenya }
-                console.log(datosCont);
-                /*
-                        desencriptar(datosCont, function (err, res) {
-                          console.log(res);
-                            if(res == true){
-                              window.location.href = "index.html"
-                            }
-                            else{
-                              console.log("Incorrecto");
-                            }
-                        })
-                
-                        */
-                desencriptar(datosCont, function (err, res) {
-                    console.log(res);
-                    if (res == true) {
-                        generateToken(correo, function (err, res) {
-                            window.location.href = "Perfil.html"
-                        })
-
-                    }
-                    else {
-                        console.log("Incorrecto");
-                    }
-                })
-
-
-
-
-                /*
-                if (res.correo == correo && res.contrasenya == correo) {
-                  auth("pepe", function (err, res) {
-                    // cuando tenga el resultado lo muestro
-                    if (err) {
-                      alert(" hubo un error de transmisión http: " + err)
-                      return
-                    }
-                    console.log(res)
-                  })
-                  //window.location.href = "index.html";
-                  
-          
-          
-          
+                else {
+                    console.log("Incorrecto");
                 }
-          */
             })
 
-        }
-    </script>
+
+
+
+            /*
+            if (res.correo == correo && res.contrasenya == correo) {
+              auth("pepe", function (err, res) {
+                // cuando tenga el resultado lo muestro
+                if (err) {
+                  alert(" hubo un error de transmisión http: " + err)
+                  return
+                }
+                console.log(res)
+              })
+              //window.location.href = "index.html";
+              
+      
+      
+      
+            }
+      */
+        })
+
+    }
+</script>
 
 
 <body>
@@ -104,13 +108,13 @@
             </div>
 
             <div class="contenedorInfo">
-    
+
                 <div class="correo_contraseña">
                     <input type="email" placeholder="Correo" id="correo">
                     <input type="password" placeholder="Contraseña" id="contrasenya">
                 </div>
-    
-    
+
+
                 <div class="politica_privacidad">
 
                     <div class="contenedorRecuerdame">
@@ -127,10 +131,11 @@
                 </div>
 
                 <a href="cambiarContrasenya.html" class="recuperarContraseñaHref">Recuperar Contraseña</a>
-  
+
             </div>
 
         </div>
     </div>
 </body>
+
 </html>

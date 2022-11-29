@@ -187,6 +187,27 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 	}) // get /usuario <correo>
 
 
+	// .......................................................
+	// GET /usuario/<id>
+	// Int --> GET usuario --> {correo: Texto, contrasenya: Texto, telefono: R, nombre: Texto, apellidos: Texto, estado: Texto, ID_user: R}
+	// .......................................................
+	servidorExpress.get("/usuarioID/:id", async function (peticion, respuesta) {
+		console.log(" * GET /usuarioID id ")
+		// averiguo el id
+		var id = peticion.params.id
+		// llamo a la función adecuada de la lógica
+		var res = await laLogica.buscarUsuarioID(id)
+		console.log(res);
+		// si el array de resultados no tiene una casilla ...
+		if (res.length != 1) {
+			// 404: not found
+			respuesta.status(404).send("no encontré id: " + id)
+			return
+		}
+		// todo ok
+		respuesta.send(JSON.stringify(res[0]))
+	}) // get /usuario <correo>
+
 
 
 	// .......................................................

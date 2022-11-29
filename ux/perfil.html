@@ -19,12 +19,67 @@
   <script src="logicaFake/insertarMedicion.js"></script>
   <script src="logicaFake/actualizar.js"></script>
   <script src="logicaFake/buscarNotificacion.js"></script>
+  <script src="logicaFake/buscarUsuario.js"></script>
+  <script src="logicaFake/buscarUsuarioID.js"></script>
+
 
 
 
   <!-- ---------------------------------------------------- -->
   <!-- Obtener los datos -->
   <script>
+
+    // Variables globales
+    var idUser;
+    var id
+
+    function getGET() {
+      // capturamos la url
+      var loc = document.location.href;
+      // si existe el interrogante
+      if (loc.indexOf('?') > 0) {
+        // cogemos la parte de la url que hay despues del interrogante
+        var getString = loc.split('?')[1];
+        // obtenemos un array con cada clave=valor
+        var GET = getString.split('&');
+        var get = {};
+        // recorremos todo el array de valores
+        for (var i = 0, l = GET.length; i < l; i++) {
+          var tmp = GET[i].split('=');
+          get[tmp[0]] = unescape(decodeURI(tmp[1]));
+        }
+        return get;
+      }
+    }
+
+    function testUser() {
+      // Cogemos los valores pasados por get
+      var valores = getGET();
+      if (valores) {
+        //recogemos los valores que nos envia la URL en variables para trabajar con ellas
+        id = parseInt(valores['id']);
+
+        buscarUsuarioID(id, function (err, res) {
+          // cuando tenga el resultado lo muestro
+          if (err) {
+            // alert(" hubo un error de transmisión http: " + err)
+            return
+          } else if (res.error) {
+            // alert(" hubo un error en la llamada: " + JSON.stringify(res.error))
+            return
+          } else {
+            console.log("Los datos de res son: " + res.nombre);
+            document.getElementById("correo").value = res.correo;
+            document.getElementById("nombre").value = res.nombre;
+            document.getElementById("apellidos").value = res.apellidos;
+            document.getElementById("telefono").value = res.telefono;
+          }
+        });
+      }
+    }
+
+    testUser()
+
     function buscarTodasNotificaciones() {
       buscarNotificacion(1, function (err, res) {
         if (err) {
@@ -140,30 +195,39 @@
       var passNuevo = document.getElementById("passNuevo").value;
       var passNuevoRepit = document.getElementById("passNuevoRepit").value;
 
-      if (passNuevo == passNuevoRepit) {
+      console.log("Value de passNuevo: " + passNuevo + " Valor de passNuevoRepit: " + passNuevoRepit);
+
+
+      if (passNuevoRepit == "" || passNuevoRepit == null) {
+        // XXX mostrar css de rellenar el campo
+        var repitNull = document.getElementById("campoNull");
+        repitNull.style.display="flex";
+        var repitNullBorde = document.getElementById("passNuevoRepit");
+        repitNullBorde.style.border = "1px red solid";
+
+      } else if (passNuevo == passNuevoRepit) {
+        console.log("Entra en else if");
         var datos = {
-          ID_user: correoActual,
+          ID_user: parseInt(id),
           correo: correoNuevo,
           telefono: telefono2,
           nombre: nombre2,
           apellidos: apellidos2,
           contrasenya: passNuevo
         };
-
         actualizar(datos, function (err, res) {
           if (err) {
-            alert(" hubo un error de transmisión http: " + err);
+            // window.location.href = "./login.html"
+            // alert(" hubo un error de transmisión http: " + err);
             return;
           } else {
             console.log("Actualizado");
+            window.location.href = "./login.html"
           }
-          window.location.href = "login.html"
         });
       } else {
         console.log("Hay algo mal");
       }
-
-
     }
   </script>
 
@@ -176,7 +240,7 @@
 
     //Cerrar Sesión
     function cerrarSesion() {
-      window.location.href = "index.html"
+      window.location.href = "index.html";
     }
   </script>
 
@@ -308,7 +372,8 @@
         </svg>
         <p>Medida</p>
       </div>
-      <div class="notificacion" id="notificacion" onclick="myFunction('notifPerfil','notificacion'), buscarTodasNotificaciones();">
+      <div class="notificacion" id="notificacion"
+        onclick="myFunction('notifPerfil','notificacion'), buscarTodasNotificaciones();">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill"
           viewBox="0 0 16 16">
           <path
@@ -334,7 +399,7 @@
       </div>
     </div>
 
-    <div class="salir">
+    <div class="salir" onclick="cerrarSesion()">
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-right"
         viewBox="0 0 16 16">
         <path fill-rule="evenodd"
@@ -433,6 +498,8 @@
         <input type="text" name="passNuevo" id="passNuevo" placeholder="Contraseña nueva" />
         <input type="text" name="passNuevoRepit" id="passNuevoRepit" placeholder="Repetir contraseña" />
       </div>
+
+      <p class="campoNull" id="campoNull" style="display:none; color:red;">Rellena el campo</p>
 
       <button class="button" onclick="actualizarPulsado()">Guardar</button>
     </form>

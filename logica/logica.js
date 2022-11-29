@@ -381,6 +381,29 @@ module.exports = class Logica {
 
 
 	// .................................................................
+	// ID: Texto
+	// -->
+	// buscarUsuarioID() <--
+	// <--
+	// {correo: Texto, contrasenya: Texto, telefono: int, nombre: Texto, apellidos: Texto}
+	//
+	// Descripción: Mediante un correo que se le pasa se busca una sentencia sql para que te devuelva todos los datos de usuario de ese correo
+	// .................................................................
+
+	buscarUsuarioID(id) {
+		var textoSQL = "select * from usuario where ID_user=$ID_user";  //$id es un parámetro 
+		var valoresParaSQL = { $ID_user: id } // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
+	// ()
+
+
+	// .................................................................
 	//  {datos} --> enviarCorreo() 
 	//
 	// Descripción: Se usa la librería nodemailer para que te envíe un correo, configuras el correo desde que se envía y la dirreción del destinatario, además del mensaje y el motivo.
