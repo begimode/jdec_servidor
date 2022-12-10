@@ -7,6 +7,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="estilos/landingPage.css">
     <title>Home</title>
+
+    <script>
+
+
+    function cookies(){
+        var cookies = document.cookie
+        .split(';')
+        .map(cookie => cookie.split('='))
+        .reduce((accumulator, [key, value]) => 
+        ({ ...accumulator, [key.trim()]: decodeURIComponent(value)}),
+        {});
+
+        return cookies;
+    }
+
+    // Si la session esta iniciada nos envia directamente a loginpage
+    if(cookies().id){
+        window.location.href = "Perfil.html";
+    }
+
+    </script>
 </head>
 
 <body>

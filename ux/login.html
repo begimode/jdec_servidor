@@ -36,6 +36,8 @@
             } else {
                 console.log("Los datos de res son: " + res.ID_user);
                 idUser = res.ID_user;
+                // set el id del usuario en cookies
+                document.cookie = "id="+idUser + "; expires=Thu, 31 Dec 2023 12:00:00 UTC;";
             }
 
             var datosCont = { hash: res.contrasenya, cont: contrasenya }
@@ -56,7 +58,7 @@
                 console.log(res);
                 if (res == true) {
                     generateToken(correo, function (err, res) {
-                        window.location.href = "Perfil.html?id=" + idUser;
+                        window.location.href = "Perfil.html";
                     })
 
                 }
@@ -64,10 +66,6 @@
                     console.log("Incorrecto");
                 }
             })
-
-
-
-
             /*
             if (res.correo == correo && res.contrasenya == correo) {
               auth("pepe", function (err, res) {
@@ -88,6 +86,7 @@
         })
 
     }
+
 </script>
 
 

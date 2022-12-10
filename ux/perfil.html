@@ -29,9 +29,15 @@
   <!-- Obtener los datos -->
   <script>
 
+    buscarTodasMedicionesPulsado()
     // Variables globales
     var idUser;
     var id
+
+    // Si no hay cookies nos envia a index
+    if (!cookies().id) {
+      window.location.href = "index.html";
+    }
 
     function getGET() {
       // capturamos la url
@@ -54,10 +60,13 @@
 
     function testUser() {
       // Cogemos los valores pasados por get
-      var valores = getGET();
-      if (valores) {
+      // var valores = getGET();
+      var cookie = cookies();
+      if (cookie) {
         //recogemos los valores que nos envia la URL en variables para trabajar con ellas
-        id = parseInt(valores['id']);
+        // id = parseInt(valores['id']);
+        id = cookie.id;
+        // console.log(id + " cookie id");
 
         buscarUsuarioID(id, function (err, res) {
           // cuando tenga el resultado lo muestro
@@ -77,8 +86,6 @@
         });
       }
     }
-
-    testUser()
 
     function buscarTodasNotificaciones() {
       buscarNotificacion(1, function (err, res) {
@@ -106,7 +113,7 @@
           alert(" hubo un error en la llamada: " + JSON.stringify(res.error));
           return;
         }
-        console.log(res);
+        console.log(res + " Datos de la tabla");
         //Llamo a esta función para crear la tabla
         crearTablaTodo(res);
       });
@@ -130,6 +137,22 @@
         //Llamo a esta función para crear la tabla
         crearTableID(res);
       });
+    }
+
+    function cookies() {
+      var cookies = document.cookie
+        .split(';')
+        .map(cookie => cookie.split('='))
+        .reduce((accumulator, [key, value]) =>
+          ({ ...accumulator, [key.trim()]: decodeURIComponent(value) }),
+          {});
+
+      return cookies;
+    }
+
+    function porcentaje(dato) {
+      var num = document.getElementById('valorActual');
+      num.innerHTML = dato + "%";
     }
   </script>
 
@@ -158,6 +181,10 @@
           "</tr>";
         table.innerHTML += row;
       }
+
+      porcentaje(data[(data.length - 1)].valor);
+
+      console.log("valor de la ultima medida es " + data[(data.length - 1)].valor);
     }
 
     function crearTableID(data) {
@@ -194,18 +221,51 @@
       var telefono2 = document.getElementById("telefono").value;
       var passNuevo = document.getElementById("passNuevo").value;
       var passNuevoRepit = document.getElementById("passNuevoRepit").value;
+      var frase = document.getElementById('campoNull');
 
       console.log("Value de passNuevo: " + passNuevo + " Valor de passNuevoRepit: " + passNuevoRepit);
-
 
       if (passNuevoRepit == "" || passNuevoRepit == null) {
         // XXX mostrar css de rellenar el campo
         var repitNull = document.getElementById("campoNull");
-        repitNull.style.display="flex";
+        repitNull.style.display = "flex";
         var repitNullBorde = document.getElementById("passNuevoRepit");
         repitNullBorde.style.border = "1px red solid";
+        var repitNullBorde = document.getElementById("passNuevo");
+        repitNullBorde.style.border = "1px red solid";
+        frase.style.display = "flex"
+        frase.innerHTML = "Rellena los campos";
+      }
+      // Si los campos no coinciden
+      else if (passNuevo != passNuevoRepit) {
+        frase.style.display = "flex"
+        frase.innerHTML = "Las contraseñas no coinciden";
+      }
+      // En caso si usuario no cambia el correo pillamos el viejo
+      else if ((passNuevo == passNuevoRepit) && (correoNuevo == null || correoNuevo == "")) {
+        console.log("Entra en else if");
+        var datos = {
+          ID_user: parseInt(id),
+          correo: correoActual,
+          telefono: telefono2,
+          nombre: nombre2,
+          apellidos: apellidos2,
+          contrasenya: passNuevo
+        };
 
-      } else if (passNuevo == passNuevoRepit) {
+        actualizar(datos, function (err, res) {
+          if (err) {
+            // window.location.href = "./login.html"
+            // alert(" hubo un error de transmisión http: " + err);
+            return;
+          } else {
+            console.log("Actualizado");
+            window.location.href = "./login.html"
+          }
+        })
+      }
+      // Si el usuario cambia todos los datos
+      else if ((passNuevo == passNuevoRepit) && (passNuevoRepit != "" || passNuevoRepit != null)) {
         console.log("Entra en else if");
         var datos = {
           ID_user: parseInt(id),
@@ -214,7 +274,7 @@
           nombre: nombre2,
           apellidos: apellidos2,
           contrasenya: passNuevo
-        };
+        }
         actualizar(datos, function (err, res) {
           if (err) {
             // window.location.href = "./login.html"
@@ -225,21 +285,24 @@
             window.location.href = "./login.html"
           }
         });
-      } else {
+      }
+      else {
         console.log("Hay algo mal");
       }
     }
+
   </script>
 
   <!-- Enlaces -->
   <script>
     //Volver al home
-    function home() {
-      window.location.href = "index.html"
-    }
+    // function home() {
+    //   window.location.href = "index.html"
+    // }
 
     //Cerrar Sesión
     function cerrarSesion() {
+      document.cookie = "id=0; expires= Thu, 31 Dec 2020 12:00:00 UTC;"
       window.location.href = "index.html";
     }
   </script>
@@ -269,7 +332,6 @@
 
   <!-- Script para el porcentaje -->
   <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
-
   <script>
     $(function () {
       // Obtener el valor porcentual
@@ -353,6 +415,8 @@
 </script>
 
 <body onload="buscarTodasMedicionesPulsado()">
+
+
   <!-- MENU BARRA LATERAL -->
   <div class="contenedor">
     <div class="logo">
@@ -381,7 +445,7 @@
         </svg>
         <p>Notificaciones</p>
       </div>
-      <div class="ajustes" id="ajustes" onclick="myFunction('ajustesPerfil','ajustes')">
+      <div class="ajustes" id="ajustes" onclick="myFunction('ajustesPerfil','ajustes'); testUser()">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
           class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
           <path
@@ -411,8 +475,9 @@
     </div>
   </div>
 
-  <!-- MEDIDAS PERFIL -->
 
+
+  <!-- MEDIDAS PERFIL -->
   <div class="perfilContenido medidasPerfil" id="medidasPerfil">
     <h1>Las medidas del sensor de gas</h1>
     <div class="datoActual">
@@ -422,7 +487,7 @@
           <div class="mask-left" style="transform: rotate(36deg);"></div>
         </div>
         <!-- Aqui pasas el numero del ultimo valor -->
-        <div class="text valoractual">70%</div>
+        <div class="text valoractual" id="valorActual">70%</div>
       </div>
 
       <p>Ozono</p>
@@ -451,8 +516,9 @@
     </div>
   </div>
 
-  <!-- NOTIFICACIONES PERFIL -->
 
+
+  <!-- NOTIFICACIONES PERFIL -->
   <div class="perfilContenido notifPerfil" id="notifPerfil">
     <h1 id="notificacionesNull">Aun no tienes notificaciones</h1>
 
@@ -474,8 +540,9 @@
     </div>
   </div>
 
-  <!-- AJUSTES PERFIL -->
 
+
+  <!-- AJUSTES PERFIL -->
   <div class="perfilContenido ajustesPerfil" id="ajustesPerfil">
     <h1>Ajustes</h1>
 
@@ -501,12 +568,13 @@
 
       <p class="campoNull" id="campoNull" style="display:none; color:red;">Rellena el campo</p>
 
-      <button class="button" onclick="actualizarPulsado()">Guardar</button>
+      <button class="button" onclick="actualizarPulsado()" type="button">Guardar</button>
     </form>
   </div>
 
-  <!-- PREGUNTAS PERFIL -->
 
+
+  <!-- PREGUNTAS PERFIL -->
   <div class="perfilContenido faqsPerfil" id="faqsPerfil">
     <section>
       <h3 class="text-center mb-4 pb-2 fw-bold">FAQs</h3>
@@ -576,7 +644,8 @@
     <!--Section: FAQ-->
   </div>
 
-  <!-- SALIR DE SESION PERFIL -->
+
+
 
   <script src="https://code.jquery.com/jquery-3.6.1.min.js"
     integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
