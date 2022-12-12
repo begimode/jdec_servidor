@@ -156,6 +156,25 @@ module.exports = class Logica {
 	}
 
 	// .................................................................
+	// mostrarMediciones30() <--
+	// <--
+	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// 
+	// Descripción: Se busca una sentencia sql para que te devuelva todos los datos de Medición
+	// .................................................................
+	buscarMedicion30(ID_placa) {
+		var textoSQL = "SELECT *  FROM medicion  WHERE ID_placa = $ID_placa  ORDER BY ID_medida DESC LIMIT 30";  //$id es un parámetro 
+		var valoresParaSQL = {$ID_placa: ID_placa} // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+					//console.log(res);
+				})
+		})
+	}
+
+	// .................................................................
 	// id: R
 	// -->
 	// buscarMedicionConID() <--
@@ -288,7 +307,8 @@ module.exports = class Logica {
 	// .................................................................
 	buscarPlacaConId(ID_user) {
 		console.log("buscarPlacaConId");
-		var textoSQL = "select * from placa where ID_user=$ID_user";  //$id es un parámetro 
+		console.log("Logica:" + ID_user);
+		var textoSQL = "SELECT * from placa where ID_user=$ID_user";  //$id es un parámetro 
 		var valoresParaSQL = { $ID_user: ID_user } // objeto 
 		return new Promise((resolver, rechazar) => {
 			this.laConexion.all(textoSQL, valoresParaSQL,

@@ -112,6 +112,21 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		respuesta.send(JSON.stringify(res))
 	}) // get /todasMediciones
 
+	// .......................................................
+	// GET /buscarMedicion30/<id>
+	// .......................................................
+	servidorExpress.get("/buscarMedicion30/:id", async function (peticion, respuesta) {
+		console.log(" * GET /buscarMedicion30 id ")
+		// averiguo el id
+		var id = peticion.params.id
+		console.log("la id es: " + id);
+
+		// llamo a la función adecuada de la lógica
+		var res = await laLogica.buscarMedicion30(id)
+		console.log(res);
+		// todo ok
+		respuesta.send(JSON.stringify(res))
+	}) // get /medicion id
 
 	// .......................................................
 	// POST /insertarMedicion
@@ -344,6 +359,7 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
 		console.log(" * GET /placa ID_user ")
 		// averiguo el id
 		var ID_user = peticion.params.ID_user;
+		console.log("La id de la placa es:" + ID_user);
 		// llamo a la función adecuada de la lógica
 		var res = await laLogica.buscarPlacaConId(ID_user);
 		console.log(res);

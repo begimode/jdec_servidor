@@ -21,6 +21,10 @@
   <script src="logicaFake/buscarNotificacion.js"></script>
   <script src="logicaFake/buscarUsuario.js"></script>
   <script src="logicaFake/buscarUsuarioID.js"></script>
+  <script src="logicaFake/buscarMedicion30.js"></script>
+  <script src="logicaFake/buscarPlaca.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 
 
@@ -96,7 +100,7 @@
           alert(" hubo un error en la llamada: " + JSON.stringify(res.error));
           return;
         }
-        console.log(res);
+        //console.log(res);
         // crearAccordionzz(res);
         crearTablaNot(res)
       });
@@ -104,19 +108,26 @@
 
     function buscarTodasMedicionesPulsado() {
       // llamo a la función de la lógica (versión fake)
-      buscarMedicion(function (err, res) {
+      var placa
+      buscarPlacaConId(cookies().id, function (err, res) {
         // cuando tenga el resultado lo muestro
         if (err) {
-          alert(" hubo un error de transmisión http: " + err);
-          return;
-        } else if (res.error) {
-          alert(" hubo un error en la llamada: " + JSON.stringify(res.error));
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Parece que no tienes medidas aún.',
+          })
           return;
         }
-        console.log(res + " Datos de la tabla");
         //Llamo a esta función para crear la tabla
-        crearTablaTodo(res);
+        placa = res.ID_placa
+        buscarMedicion30(placa, function (err, res) {
+          // cuando tenga el resultado lo muestr
+          //Llamo a esta función para crear la tabla
+          crearTablaTodo(res);
+        });
       });
+
     }
 
     function buscarMedicionIDPulsado() {
@@ -184,7 +195,7 @@
 
       porcentaje(data[(data.length - 1)].valor);
 
-      console.log("valor de la ultima medida es " + data[(data.length - 1)].valor);
+      //console.log("valor de la ultima medida es " + data[(data.length - 1)].valor);
     }
 
     function crearTableID(data) {
