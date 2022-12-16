@@ -1,4 +1,6 @@
-# En este repositorio se encuentra la pagina web desde donde se podran ver los mapas de las mediciones de c02, configuracion de usuario etc.
+# JDEC servidor
+
+En este repositorio se encuentra la pagina web desde donde se podran ver los mapas de las mediciones de c02, configuracion de usuario etc.
 
 Para iniciar el servidor web:
 
