@@ -377,6 +377,29 @@ module.exports = class Logica {
 	}
 
 
+		// .................................................................
+	// id: R
+	// -->
+	// buscarUltimaMedicion() <--
+	// <--
+	// {id: R, valor: R, fehca: Texto, nombreSensor: Texto, longitud: R, latitud: R}
+	// 	
+	// Descripción: Esta funcion devuelve el ID más alto de la tabla Medicion
+	// .................................................................
+	buscarUltimaMedicion() {
+		console.log("buscar ultima medicion");
+		// console.log("Logica:" + ID_user);
+		var textoSQL = "SELECT *FROM medicion WHERE ID_medida = (SELECT MAX(ID) FROM medicion);";  //$id es un parámetro 
+		var valoresParaSQL = {} // objeto 
+		return new Promise((resolver, rechazar) => {
+			this.laConexion.all(textoSQL, valoresParaSQL,
+				(err, res) => {
+					(err ? rechazar(err) : resolver(res))
+				})
+		})
+	}
+	
+	
 	// .................................................................
 	// correo: Texto
 	// -->

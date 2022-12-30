@@ -82,6 +82,24 @@ function cargarReglasUniversales(servidorExpress, laLogica) {
     // ()
 
 	
+		// .......................................................
+	// GET /ultimaMedicion/<medicion>
+	// GET medicion --> {ID_medida: N:, valor: R, fecha: DATE, tipoMedida: TXT, Longitud: Z, Latitud : Z, ID_placa: N}
+	// .......................................................
+	servidorExpress.get("/buscarUltimaMedida"), async function(peticion, respuesta) {
+		console.log("* GET/ UltimaMedida*");
+		//llamo a la funcion determinada de la logica 
+		var res = await laLogica.buscarUltimaMedicion(); 
+		console.log(res);
+		if(res.length != 1) 
+		{
+			respuesta.status(404).send("no he podido encontrar la ultima medicion")
+			return
+		}
+		//Ok 
+		respuesta.send(JSON.stringify(res[0]))	
+	}
+	
 	// .......................................................
 	// GET /medicion/<id>
 	// .......................................................
